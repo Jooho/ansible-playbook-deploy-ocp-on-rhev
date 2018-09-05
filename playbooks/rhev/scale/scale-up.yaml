@@ -76,7 +76,7 @@
       node_type: ocp-host 
 
 - name: Scaling Out OCP Cluster
-  include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-node/scaleup.yml
+  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-node/scaleup.yml
 
 - hosts: localhost
   tasks:

@@ -13,11 +13,12 @@ from StringIO import StringIO
               show_default=True)
 @click.option('--deploy_type',
               default='ocp',
-              type=click.Choice(['ocp', 'scale', 'bg_upgrade', 'logging', 'metrics', 'ansible-controller']),
+              type=click.Choice(['ansible-controller', 'ocp', 'scale', 'bg_upgrade', 'logging', 'metrics' ]),
               help='This option specifies main commands : deploying a new cluster, scaling up/down nodes, blue green upgrade',
               show_default=True)
 @click.option('--operate',
-              type=click.Choice(['deploy', 'undeploy', 'start', 'stop', 'teardown', 'up', 'down', 'warmup', 'upgrade']),
+              default='deploy',
+              type=click.Choice(['create', 'config', 'deploy', 'undeploy', 'start', 'stop', 'teardown', 'up', 'down', 'warmup', 'upgrade']),
               help='This option specifies sub commands : deploying a new cluster, start/stop/teardown VMs, scaling up/down')
 @click.option('--tag',
               help='The tag of cluster used for targeting specific cluster operated to. It will overwrite the value from vars/all ')
@@ -56,52 +57,59 @@ def launch(provider=None,
            new_cluster_color=None,
            verbose=0):
 
+    # validate ansible-controller deploy_type options
+    if deploy_type == 'ansible-controller':
+        if operate not in ['create', 'config']:
+            print "[Not Valid Operate] - '%s' only allowed for ocp" %operate
+            sys.exit(1)
+
+
     # validate ocp deploy_type options
     if deploy_type == 'ocp':
         if target is not None:
-            print "--target option is for scale/bg_upgrade"
+            print "[Not Valid Options] - --target option is for scale/bg_upgrade"
             sys.exit(1)
 
         if operate not in ['deploy', 'start', 'stop', 'teardown']:
-            print "operate (deploy/start/stop/teardown) only allowed for ocp"
+            print "[Not Valid Operate] - '%s' only allowed for ocp" %operate
             sys.exit(1)
 
     # validate scale deploy_type options
     if deploy_type == 'scale':
         if target is None:
-            print "--target_node_filter option is for ocp"
+            print "[Not Valid Options] - --target_node_filter option is for ocp"
             sys.exit(1)
 
         if operate not in ['up', 'down']:
-            print "operate (up/down) only allowed for scale deploy_type"
+            print "[Not Valid Options] - (up/down) only allowed for scale deploy_type"
             sys.exit(1)
 
     # validate bg_upgrade deploy_type options
     if deploy_type == 'bg_upgrade':
         if target is None:
-            print "target option is essential for bg_upgrade"
+            print "[Not Valid Options] - target option is essential for bg_upgrade"
             sys.exit(1)
 
         if operate not in ['deploy', 'warmup']:
-            print "operate (deploy/warmup) only allowed for bg_upgrade deploy_type"
+            print "[Not Valid Options] - (deploy/warmup) only allowed for bg_upgrade deploy_type"
             sys.exit(1)
 
     # validate bg_upgrade deploy_type options
     if deploy_type == 'ansible_controller':
         if target_node_filter is not None:
-            print "--target_node_filter option is for ocp"
+            print "[Not Valid Options] - --target_node_filter option is for ocp"
             sys.exit(1)
 
         if instances is not None:
-            print "--instances option is for scale"
+            print "[Not Valid Options] - --instances option is for scale"
             sys.exit(1)
 
         if operate is not None:
-            print "operate is not allowed"
+            print "[Not Valid Options] - operate is not allowed"
             sys.exit(1)
 
         if target is not None:
-            print "--target option is for scale/bg_upgrade"
+            print "[Not Valid Options] - --target option is for scale/bg_upgrade"
             sys.exit(1)
 
 
@@ -136,14 +144,25 @@ def launch(provider=None,
 
 
 # Construct ansible command
-    if deploy_type == 'ansible-controller':
+    if deploy_type == 'ansible-controller' and operate == 'create':
         status = os.system(
-             'ansible-playbook %s playbooks/%s/ansible-controller.yaml \
+             'ansible-playbook %s playbooks/%s/ansible-controller/ansible-controller.yaml \
              --extra-vars "@vars/all" \
              --extra-vars "@vars/ocp_params" \
              -e "%s" '
              % (verbosity, provider, sio.getvalue())
         )
+ 
+    elif deploy_type == 'ansible-controller' and operate == 'config':
+        status = os.system(
+             'ansible-playbook %s playbooks/%s/ansible-controller/ansible-controller-configure.yaml \
+             --extra-vars "@vars/all" \
+             --extra-vars "@vars/ocp_params" \
+             -e "%s" '
+             % (verbosity, provider, sio.getvalue())
+        )
+ 
+
     else:
         status = os.system(
             'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/config.yaml \
