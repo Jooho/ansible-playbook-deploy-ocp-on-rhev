@@ -1,3 +1,13 @@
 ---
+- hosts: localhost
+  pre_tasks:
+    - name: set concurrent path
+      local_action: command pwd
+      register: pwd
+ 
+    - name: set_facts - pwd_path
+      set_fact:
+         pwd_path: "{{pwd.stdout| regex_replace('/[^/]*$','')}}"
+
 - include: ./rhev-dispatcher.yaml
   when: provider=='rhev'

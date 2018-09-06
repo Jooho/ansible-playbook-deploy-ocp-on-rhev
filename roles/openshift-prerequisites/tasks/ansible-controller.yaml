@@ -42,7 +42,7 @@
   shell: ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""
   args:
     creates: ~/.ssh/id_rsa
-  when: not dns_conf_exist.stat.exists
+  when: not ssh_exist.stat.exists
 
 - name: Determine if firewalld is installed
   yum:

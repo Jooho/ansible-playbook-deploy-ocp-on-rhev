@@ -89,3 +89,5 @@ deploy.py --deploy_type=ocp --operate=deploy
    nfs_mount_point: /exports-nfs
    nfs_block_dev_name: vdc
    ```
+- ansible-playbook ./playbooks/common/generate_hosts.yml -e @vars/all -e "{reformat_vars_to_hosts: true}" -e provider=rhev
+

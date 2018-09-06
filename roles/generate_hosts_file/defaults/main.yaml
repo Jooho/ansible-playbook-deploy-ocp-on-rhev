@@ -1,1 +1,2 @@
-ocp_variable_path: ''
+ocp_param_path: ''
+reformat_vars_to_hosts: true

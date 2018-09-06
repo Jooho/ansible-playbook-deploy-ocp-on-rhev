@@ -1,0 +1,14 @@
+
+
+- name: Copy OCP example conf /tmp/.
+  copy: src="{{pwd_path}}/vars/official_inventory_file" dest=/tmp/ocp_hosts_example_hosts
+
+- name: Reformat hosts file to variable
+  replace: 
+    path: /tmp/ocp_hosts_example_hosts
+    regexp: '(\b=)'
+    replace: ': '
+
+- name: Add ocp cluster parameters into hosts file
+  copy: src="/tmp/ocp_hosts_example_hosts" dest="{{pwd_path}}/vars/ocp_params_example"
+  
