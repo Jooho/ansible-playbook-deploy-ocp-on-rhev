@@ -8,45 +8,85 @@
   file: 
     path: /etc/dnsmasq.d/ocp-{{cluster_tag}}.conf
     state: absent
-  when: j_deploy_type == 'ocp' and interim_dns.rewrite_conf is defined and interim_dns.rewrite_conf 
+  when: interim_dns.rewrite_conf is defined and interim_dns.rewrite_conf 
 
 - name: Clean Master Internal Hostname in /etc/hosts
   lineinfile:
     path: /etc/hosts
     state: absent
     regexp: "{{ocp_master_cluster_hostname}}"
-  when: j_deploy_type == 'ocp' and interim_dns.rewrite_conf is defined and interim_dns.rewrite_conf 
+  when: interim_dns.rewrite_conf is defined and interim_dns.rewrite_conf 
+
+- name: Get IPs from Masters
+  shell: "host {{item}}|awk '{print $NF}'"
+  register: masters_ip
+  with_items: 
+    - "{{ groups.masters }}"
+  until: masters_ip.stdout != ''
+  ignore_errors: yes
+  delay: 10
+  retries: 100
+  when: master_node_vms is defined and master_node_vms|int > 0 and j_deploy_type == 'ocp'
 
 - name: Add IPs of Masters into Memory
   add_host:
-    name: "{{hostvars[item]['ansible_default_ipv4']['address']}}"
+    name: "{{item.stdout}}"
     groups: master_nodes_ip
-  with_items: 
-    - "{{ groups.masters }}"
+  with_items: "{{masters_ip.results}}"
   when: master_node_vms is defined and master_node_vms|int > 0 and j_deploy_type == 'ocp'
+
+- name: Get IPs from Infra Nodes
+  shell: "host {{item}}|awk '{print $NF}'"
+  register: infras_ip
+  with_items: 
+   - "{{ groups.infra_nodes }}"
+  until: infras_ip.stdout != ''
+  ignore_errors: yes
+  delay: 10
+  retries: 100
+  when: infra_node_vms is defined and infra_node_vms|int > 0 and j_deploy_type == 'ocp'
 
 - name: Add IPs of Infra into Memory
   add_host:
-    name: "{{hostvars[item]['ansible_default_ipv4']['address']}}"
+    name: "{{item.stdout}}"
     groups: infra_nodes_ip
-  with_items: 
-   - "{{ groups.infra_nodes }}"
+  with_items: "{{ infras_ip.results}}"
   when: infra_node_vms is defined and infra_node_vms|int > 0 and j_deploy_type == 'ocp'
 
+- name: Get IPs from App Nodes for Infra (when infra nodes does not exist)
+  shell: "host {{item}}|awk '{print $NF}'"
+  register: apps_ip
+  with_items: 
+    - "{{ groups.app_nodes }}"
+  until: apps_ip.stdout != ''
+  ignore_errors: yes
+  delay: 10
+  retries: 100
+  when: ((infra_node_vms is not defined) or (infra_node_vms is defined and infra_node_vms == 0)) and (app_node_vms is defined and app_node_vms|int > 0 and j_deploy_type == "ocp")
+  
 - name: Add IPs of App for Infra into Memory (when infra nodes does not exist)
   add_host:
-    name: "{{hostvars[item]['ansible_default_ipv4']['address']}}"
+    name: "{{item.stdout}}"
     groups: infra_nodes_ip
-  with_items: 
-    - "{{ groups.app_nodes }}"
+  with_items: "{{ apps_ip.results }}"
   when: ((infra_node_vms is not defined) or (infra_node_vms is defined and infra_node_vms == 0)) and (app_node_vms is defined and app_node_vms|int > 0 and j_deploy_type == "ocp")
 
-- name: Add IPs of App into Memory
-  add_host:
-    name: "{{hostvars[item]['ansible_default_ipv4']['address']}}"
-    groups: app_nodes_ip
+- name: Get IPs from App Nodes
+  shell: "host {{item}}|awk '{print $NF}'"
+  register: apps_ip
   with_items: 
     - "{{ groups.app_nodes }}"
+  until: apps_ip.stdout != ''
+  ignore_errors: yes
+  delay: 10
+  retries: 100
+  when: app_node_vms is defined and app_node_vms|int > 0 and j_deploy_type == "ocp" 
+  
+- name: Add IPs of App into Memory
+  add_host:
+    name: "{{item.stdout}}"
+    groups: app_nodes_ip
+  with_items: "{{ apps_ip.results }}"
   when: app_node_vms is defined and app_node_vms|int > 0 and j_deploy_type == "ocp" 
 
 - name: Copy dnsmasq conf - forwarder.conf

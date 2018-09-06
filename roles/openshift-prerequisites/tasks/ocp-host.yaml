@@ -39,7 +39,7 @@
 #  when: need_repo_list|difference(enabled_repo_list.stdout_lines)|length != 0 
 #
 
-- import_tasks: ./manage-repositories.yml
+- import_tasks: ./manage-repositories.yaml
 
 
 # TO-DO

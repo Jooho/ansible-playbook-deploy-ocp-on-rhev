@@ -1,0 +1,14 @@
+- hosts: all
+  tasks:
+  - debug: msg="{{item}}"
+    with_items:
+      - "{{ groups.masters }}"
+  
+  - name: Add IPs of Masters into Memory
+    add_host:
+      name: "{{hostvars[item]['ansible_default_ipv4']['address']}}"
+      groups: master_nodes_ip
+    with_items:
+      - "{{ groups.masters }}"
+    run_once: yes
+

@@ -1,7 +1,7 @@
 # Distinguish Each Cluster
 # tag: 36
 prefix_vm: jlee
-tag: 37-0619
+tag: 37-0905
 timestamp: "{{ lookup('pipe', 'date +%m%d') }}"
 default_cluster_tag: "{{ocp_short_version}}_{{timestamp}}"
 cluster_tag: "{{tag|default(default_cluster_tag)}}"
@@ -89,7 +89,9 @@ loglevel: debug
 # Interim DNS
 # Rewrite DNS configuration, set rewrite_conf is true
 # rewrite_conf: true
+
 interim_dns:
+  rewrite_conf: yes
   install: true
   forwarder_dns:
     - 10.11.5.4

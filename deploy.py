@@ -32,9 +32,6 @@ from StringIO import StringIO
 @click.option('--target',
               type=click.Choice(['app', 'infra', 'master', 'node']),
               help='Target node: app/infra for scale, master/node for bg upgrade')
-@click.option('--force',
-              default=False,
-              help='Ignore validation and force to rewrite configuration event though it exists')
 @click.option('--new_cluster_color',
               type=click.Choice(['green', 'blue', None]),
               default=None,
@@ -53,7 +50,6 @@ def launch(provider=None,
            target=None,
            instances=None,
            ocp_install=None,
-           force=None,
            new_cluster_color=None,
            verbose=0):
 
@@ -62,7 +58,6 @@ def launch(provider=None,
         if operate not in ['create', 'config']:
             print "[Not Valid Operate] - '%s' only allowed for ocp" %operate
             sys.exit(1)
-
 
     # validate ocp deploy_type options
     if deploy_type == 'ocp':
@@ -121,8 +116,8 @@ def launch(provider=None,
 
 
     # Create variable list to overwrite
-    all_variables_str= ["provider", "j_deploy_type", "operate", "tag", "target_node_filter", "ocp_install", "target", "instances", "ocp_version", "force_rewrite", "new_cluster_color"];
-    all_variables_real= [provider, deploy_type, operate, tag, target_node_filter, ocp_install, target, instances, ocp_version, force, new_cluster_color];
+    all_variables_str= ["provider", "j_deploy_type", "operate", "tag", "target_node_filter", "ocp_install", "target", "instances", "ocp_version", "new_cluster_color"];
+    all_variables_real= [provider, deploy_type, operate, tag, target_node_filter, ocp_install, target, instances, ocp_version, new_cluster_color];
     overwrite_variables=[];
     var_index=0
     sio=StringIO();
@@ -167,9 +162,10 @@ def launch(provider=None,
         status = os.system(
             'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/config.yaml \
             --extra-vars "@vars/all" \
-            --extra-vars "@vars/ocp_params" -e retry_scale=false \
-            -e "%s"'
-            % (verbosity, sio.getvalue())
+            --extra-vars "@vars/ocp_params" \
+            -e "%s" --tags "%s"'
+
+            % (verbosity, sio.getvalue(),deploy_type)
               
         )
 

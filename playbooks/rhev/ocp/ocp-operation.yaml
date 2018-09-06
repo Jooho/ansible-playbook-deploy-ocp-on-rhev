@@ -125,7 +125,7 @@
       async: 1800
       poll: 0
       when: operate == 'stop' or operate == 'teardown'
-    - debug: var=vm_operate 
+
     - name: Wait for operation completion
       async_status: jid="{{ item.ansible_job_id }}"
       register: vm_jobs
@@ -136,4 +136,82 @@
          - "{{ vm_operate_process.results }}"
       when: operate == 'stop' or operate == 'teardown'
       ignore_errors: yes
+      delegate_to: localhost
+
+
+#    - name: Refresh inventory to ensure new instaces exist in inventory
+#      meta: refresh_inventory
+
+# Tag Managements
+
+    - name: Delete Tag for Master VMs
+      ovirt_tags:
+        auth:
+          username: "{{rhev.id}}"
+          password: "{{rhev.pw}}"
+          url: "{{rhev.api_url}}"
+          ca_file: "{{rhev.ca_file}}"
+        name: "{{cluster_tag}}_master_node_vms"
+        state: absent 
+      when: operate == 'teardown' 
+      delegate_to: localhost
+     
+    - name: Delete Tag for Infra VMs
+      ovirt_tags:
+        auth:
+          username: "{{rhev.id}}"
+          password: "{{rhev.pw}}"
+          url: "{{rhev.api_url}}"
+          ca_file: "{{rhev.ca_file}}"
+        name: "{{cluster_tag}}_infra_node_vms"
+        state: absent
+      when: operate == 'teardown' and infra_node_vms is defined and infra_node_vms > 0
+      delegate_to: localhost
+     
+    - name: Delete Tag for App VMs
+      ovirt_tags:
+        auth:
+          username: "{{rhev.id}}"
+          password: "{{rhev.pw}}"
+          url: "{{rhev.api_url}}"
+          ca_file: "{{rhev.ca_file}}"
+        name: "{{cluster_tag}}_app_node_vms"
+        state: absent
+      when: operate == 'teardown' and app_node_vms is defined and app_node_vms > 0
+      delegate_to: localhost
+     
+    - name: Delete Tag for App as an Infra VM
+      ovirt_tags:
+        auth:
+          username: "{{rhev.id}}"
+          password: "{{rhev.pw}}"
+          url: "{{rhev.api_url}}"
+          ca_file: "{{rhev.ca_file}}"
+        name: "{{cluster_tag}}_infra_node_vms"
+        state: absent
+      when: operate == 'teardown' and infra_node_vms is not defined 
+      delegate_to: localhost
+     
+    - name: Delete Tag for ETCD VMs
+      ovirt_tags:
+        auth:
+          username: "{{rhev.id}}"
+          password: "{{rhev.pw}}"
+          url: "{{rhev.api_url}}"
+          ca_file: "{{rhev.ca_file}}"
+        name: "{{cluster_tag}}_etcd_node_vms"
+        state: absent
+      when: operate == 'teardown' and etcd_node_vms is defined and etcd_node_vms > 0
+      delegate_to: localhost
+     
+    - name: Delete Tag for LB VMs
+      ovirt_tags:
+        auth:
+          username: "{{rhev.id}}"
+          password: "{{rhev.pw}}"
+          url: "{{rhev.api_url}}"
+          ca_file: "{{rhev.ca_file}}"
+        name: "{{cluster_tag}}_lb_node_vms"
+        state: absent
+      when: operate == 'teardown' and master_node_vms|int > 1
       delegate_to: localhost
