@@ -66,3 +66,26 @@ Architecture (1 LB x 3 Master x 3 Infa x 2 App)
 deploy.py --deploy_type=ocp --operate=deploy
 ```
 
+
+
+## 3.7 latest test command
+### Ansible Controller
+- ./deploy.py --deploy_type=ansible-controller  --operate=create
+- ./deploy.py --deploy_type=ansible-controller  --operate=config
+- ./deploy.py --deploy_type=ocp --operate=deploy (1 x M , 2 x N)
+  - service catalog is not running well because there is no storageClass
+- ./deploy.py --deploy_type=ocp --operate=teardown --ocp_install=false
+- ./deploy.py --deploy_type=ocp --operate=stop --tag=37-0619
+
+- ./deploy.py --deploy_type=ocp --operate=deploy
+  - overwrite dns
+    ```
+    interim_dns:
+      rewrite_conf: true
+    ```
+- ./deploy.py --deploy_type=nfs
+   ```
+   nfs_server_ip: dhcp182-21.gsslab.rdu2.redhat.com
+   nfs_mount_point: /exports-nfs
+   nfs_block_dev_name: vdc
+   ```

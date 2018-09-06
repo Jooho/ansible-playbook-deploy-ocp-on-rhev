@@ -9,5 +9,5 @@
   when: node_type == 'ocp-host'
 
 - name: Set up ocp lb host
-  include: ./ocp-lb.yaml
+  include: ./manage-repositories.yaml
   when: node_type == 'ocp-lb'

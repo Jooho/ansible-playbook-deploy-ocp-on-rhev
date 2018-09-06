@@ -1,8 +1,6 @@
 ---
 - hosts: localhost
-  pre_tasks:
-    - debug: var=force_rewrite
-    - debug: var=operate 
+  tasks:
     - set_fact:
         ansible_controller_ip: "{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}"
     - name: Check validation for ocp cluster
@@ -35,12 +33,15 @@
       include_role:
         name: generate_hosts_file
 
+
+- hosts: all_nodes
+  tasks:
     - name: Install interim dns 
       include_role:
         name: interim_dns
       when: interim_dns.install
-
-
+      delegate_to: localhost
+      run_once: yes
 
 # RHSM register subscription
 - hosts: masters{% if (master_node_vms|int > 1) %},lb{% endif %}{% if infra_node_vms is defined and infra_node_vms > 0%},infra_nodes{% endif %}

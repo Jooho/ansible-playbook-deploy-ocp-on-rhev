@@ -27,6 +27,7 @@ This script help deploy OpenShift on RHEV and also provide some more features fo
 
 ### Deploying VM/OCP/Metrics/Logging + Scale/BG Upgrade ###
 - [Set up ansible controller vm](./docs/ansible-controller-vm.md)
+- [Set up NFS server](./docs/setup-nfs.md)
 - [Deploy OpenShift cluster](./docs/deploy-ocp-cluster.md)
 - [Operate OpenShift cluster](./docs/operate-ocp-cluster.md)
 - [Metrics](./docs/metrics.md)

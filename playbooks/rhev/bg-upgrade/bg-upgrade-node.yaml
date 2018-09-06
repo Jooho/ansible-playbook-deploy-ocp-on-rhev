@@ -106,5 +106,5 @@
 
 
 # Deploy Blue Green VMs 
-- include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-node/scaleup.yml
+- import_playbook: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-node/scaleup.yml
 

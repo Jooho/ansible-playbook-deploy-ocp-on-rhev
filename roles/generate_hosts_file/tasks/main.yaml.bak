@@ -5,7 +5,6 @@
 
 - name: Copy OCP conf /tmp/.
   template: src=ocp_hosts.j2 dest=/tmp/ocp_hosts_{{cluster_tag}}
-  when: ocp_variable_path == ''
 
 - name: Load OCP configuration
   command: "cat /tmp/ocp_hosts_{{cluster_tag}}"

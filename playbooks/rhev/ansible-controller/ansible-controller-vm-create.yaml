@@ -1,0 +1,53 @@
+---
+- hosts: localhost
+  pre_tasks:
+    - debug: var=ocp_version
+    - name: Validate Subscription Pool is specified
+      fail: msg="Validate Subscription Pool is specified"
+      when: not lookup('env', 'BROKER_SUB_POOL_ID') or not lookup('env', 'BROKER_SUB_POOL')
+
+    - name: Create Ansible Controller VM from template
+      ovirt_vms:
+         name: "{{prefix_vm}}_ansible_controller_2"
+         template: "{{rhev.template}}"
+         cluster: "{{rhev.cluster}}"
+         auth:
+           username: "{{rhev.id}}"
+           password: "{{rhev.pw}}"
+           url: "{{rhev.api_url}}"
+           ca_file: "{{rhev.ca_file}}"
+         operating_system: "{{base_image.os}}_{{base_image.rhev_os_type}}"
+         state: running
+         wait: True
+      register: created_ansible_controller_vm_info
+
+    - name: Watiting until fqdn is set
+      block:
+        - name: Gather Ansible Controller VM info
+          ovirt_vms_facts:
+            pattern: "name={{created_ansible_controller_vm_info.vm.name}}"
+            auth:
+              username: "{{rhev.id}}"
+              password: "{{rhev.pw}}"
+              url: "{{rhev.api_url}}"
+              ca_file: "{{rhev.ca_file}}"
+          register: vms_info
+          until: vms_info.ansible_facts.ovirt_vms[0].fqdn is defined
+          ignore_errors: yes
+          retries: 60
+          delay: 10
+
+    - name: Refresh inventory to ensure new instaces exist in inventory
+      meta: refresh_inventory
+
+    - name: Add ansible controller to memory
+      add_host:
+        name: "{{vms_info.ansible_facts.ovirt_vms[0].fqdn}}"
+        groups: ansible-controller
+
+  roles:
+    - role: ssh-id-copy
+      ssh_id_copy_target: "{{vms_info.ansible_facts.ovirt_vms[0].fqdn}}"
+
+
+  
