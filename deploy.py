@@ -13,7 +13,7 @@ from StringIO import StringIO
               show_default=True)
 @click.option('--deploy_type',
               default='ocp',
-              type=click.Choice(['ansible-controller', 'ocp', 'scale', 'bg_upgrade', 'logging', 'metrics' ]),
+              type=click.Choice(['nfs','ansible-controller', 'ocp', 'scale', 'bg_upgrade', 'logging', 'metrics' ]),
               help='This option specifies main commands : deploying a new cluster, scaling up/down nodes, blue green upgrade',
               show_default=True)
 @click.option('--operate',
@@ -157,6 +157,17 @@ def launch(provider=None,
              % (verbosity, provider, sio.getvalue())
         )
  
+    elif deploy_type == 'nfs':
+        status = os.system(
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/nfs.yaml \
+            --extra-vars "@vars/all" \
+            --extra-vars "@vars/ocp_params" \
+            -e "%s" '
+
+            % (verbosity, sio.getvalue())
+              
+        )
+
 
     else:
         status = os.system(

@@ -83,3 +83,9 @@ deploy.py --deploy_type=ocp --operate=deploy
     interim_dns:
       rewrite_conf: true
     ```
+- ./deploy.py --deploy_type=nfs
+   ```
+   nfs_server_ip: dhcp182-21.gsslab.rdu2.redhat.com
+   nfs_mount_point: /exports-nfs
+   nfs_block_dev_name: vdc
+   ```
