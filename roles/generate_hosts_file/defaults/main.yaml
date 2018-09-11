@@ -1,2 +1,3 @@
 ocp_param_path: ''
 reformat_vars_to_hosts: true
+pwd_path: ''

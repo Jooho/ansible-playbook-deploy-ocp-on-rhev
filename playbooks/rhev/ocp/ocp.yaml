@@ -1,5 +1,13 @@
 ---
 - hosts: localhost
+  pre_tasks:
+    - name: set concurrent path
+      local_action: command pwd
+      register: pwd
+
+    - name: set_facts - pwd_path
+      set_fact:
+         pwd_path: "{{pwd.stdout| regex_replace('/[^/]+/[^/]+/[^/]*$','')}}"
   tasks:
     - set_fact:
         ansible_controller_ip: "{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}"
@@ -7,6 +15,7 @@
       include: ./validate.yaml
 
     - debug: var=ansible_controller_ip
+    - debug: msg="{{hostvars['localhost']['pwd_path']}}"
 
     - name: Create RHEV VM 
       include: ./ocp-create-vms.yaml
@@ -17,27 +26,28 @@
     - name: Update groups
       include: ../tasks/generate-host-groups-ocp.yaml
 
+    - name: generate host file
+      include_role:
+        name: generate_hosts_file
+      vars:
+        ocp_param_path: "{{hostvars['localhost']['pwd_path']}}/vars/ocp_params"
+
     - name: Update ssh known_host
       include_role:
         name: ssh-id-copy
       vars:
         ssh_id_copy_target: cluster
 
-    - name: Inall Ansible Controller Pre-Requisites
+    - name: Install Ansible Controller Pre-Requisites
       include_role: 
         name: 'openshift-prerequisites'
       vars:  
         node_type: 'ansible-controller'
 
-    - name: generate host file
-      include_role:
-        name: generate_hosts_file
-      vars:
-        ocp_param_path: "{{pwd_path}}/vars/ocp_params"
-
 
 
 - hosts: all_nodes
+  gather_facts: yes
   tasks:
     - name: Install interim dns 
       include_role:

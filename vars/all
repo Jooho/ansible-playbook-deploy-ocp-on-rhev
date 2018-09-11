@@ -61,7 +61,7 @@ ocp_master_cluster_hostname: "masters-{{cluster_tag}}.{{ocp_dns_domain}}"
 # etcd_node_vms
 master_node_vms: 3
 infra_node_vms: 3
-app_node_vms: 2
+app_node_vms: 5
 master_node_prefix: master
 infra_node_prefix: infra
 app_node_prefix: app

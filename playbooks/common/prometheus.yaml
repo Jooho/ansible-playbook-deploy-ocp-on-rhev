@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  tasks: 
+    - name: Update groups
+      include: "../{{provider}}/tasks/generate-host-groups.yaml"
+      tags:
+      - always
+
+- include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-prometheus.yml

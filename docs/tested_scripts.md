@@ -74,6 +74,7 @@ deploy.py --deploy_type=ocp --operate=deploy
 - ./deploy.py --deploy_type=ansible-controller  --operate=config
 - ./deploy.py --deploy_type=ocp --operate=deploy (1 x M , 2 x N)
   - service catalog is not running well because there is no storageClass
+- ./deploy.py --deploy_type=ocp --operate=install (Install openshift directly)
 - ./deploy.py --deploy_type=ocp --operate=teardown --ocp_install=false
 - ./deploy.py --deploy_type=ocp --operate=stop --tag=37-0619
 
@@ -90,4 +91,5 @@ deploy.py --deploy_type=ocp --operate=deploy
    nfs_block_dev_name: vdc
    ```
 - ansible-playbook ./playbooks/common/generate_hosts.yml -e @vars/all -e "{reformat_vars_to_hosts: true}" -e provider=rhev
-
+- ./deploy.py --deploy_type=metrics --operate=deploy
+- ./deploy.py --deploy_type=metrics --operate=undeploy

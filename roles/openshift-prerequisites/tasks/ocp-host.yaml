@@ -78,9 +78,12 @@
 - name: Configure docker-storage-setup configuration
   copy:
     content: |
+      STORAGE_DRIVER=overlay2
+      CONTAINER_ROOT_LV_NAME=dockerlv
+      CONTAINER_ROOT_LV_SIZE=100%FREE
+      CONTAINER_ROOT_LV_MOUNT_PATH=/var/lib/docker
       DEVS=/dev/vdb
       VG=docker-vg
-      DATA_SIZE=95%VG
       EXTRA_STORAGE_OPTIONS="--storage-opt dm.basesize=3G"
     dest: /etc/sysconfig/docker-storage-setup
 

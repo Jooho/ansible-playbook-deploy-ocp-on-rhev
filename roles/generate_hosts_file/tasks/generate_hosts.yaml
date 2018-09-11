@@ -11,7 +11,7 @@
   when: ocp_param_path == ''
 
 - name: Copy OCP conf /tmp/.
-  copy: src="{{ocp_param_path}}" dest=/tmp/ocp_hosts_{{cluster_tag}}
+  template: src="{{ocp_param_path}}" dest=/tmp/ocp_hosts_{{cluster_tag}}
   when: ocp_param_path != '' 
 
 - name: Reformat variable to hosts file
