@@ -23,6 +23,12 @@ osm_default_node_selector: "role=app"
 #openshift_master_api_port: 443
 #openshift_master_console_port: 443
 
+# Enable API service auditing
+openshift_master_audit_config={"enabled": true}
+openshift_master_audit_config={"enabled": true, "auditFilePath": "/var/log/openpaas-oscp-audit/openpaas-oscp-audit.log", "maximumFileRetentionDays": 14, "maximumFileSizeMegabytes": 500, "maximumRetainedFiles": 5}
+
+
+
 # CRIO
 #openshift_use_crio: True
 # Force the registry to use for the container-engine/crio system container. By default the registry
@@ -137,13 +143,14 @@ openshift_prometheus_alertbuffer_storage_type: 'pvc'
 openshift_prometheus_alertbuffer_storage_class: managed-nfs-storage
 
 # CFME project
-#openshift_management_project: openshift-management
-#openshift_management_project_description: CloudForms Management Engine
-#openshift_management_app_template: cfme-template
-#openshift_management_storage_class: managed-nfs-storage
-#openshift_management_template_parameters={'APPLICATION_MEM_REQ': '3000Mi', 'POSTGRESQL_MEM_REQ': '1Gi', 'ANSIBLE_MEM_REQ': '512Mi', 'APPLICATION_VOLUME_CAPACITY': '5Gi', 'DATABASE_VOLUME_CAPACITY': '10Gi'}
-#openshift_management_storage_nfs_external_hostname: "{{nfs_server_ip}}"
-#openshift_management_storage_nfs_base_dir: "{{nfs_mount_point}}"
+openshift_management_project: openshift-management
+openshift_management_project_description: CloudForms Management Engine
+openshift_management_app_template: cfme-template
+openshift_management_storage_class: nfs_external
+openshift_management_install_beta: true
+openshift_management_template_parameters: {'APPLICATION_MEM_REQ': '3000Mi', 'POSTGRESQL_MEM_REQ': '1Gi', 'ANSIBLE_MEM_REQ': '512Mi', 'APPLICATION_VOLUME_CAPACITY': '5Gi', 'DATABASE_VOLUME_CAPACITY': '10Gi'}
+openshift_management_storage_nfs_external_hostname: "{{nfs_server_ip}}"
+openshift_management_storage_nfs_base_dir: "{{nfs_mount_point}}"
 
 
 # Enable service catalog
