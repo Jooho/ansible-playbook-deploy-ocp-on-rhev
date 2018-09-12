@@ -84,7 +84,7 @@
       CONTAINER_ROOT_LV_MOUNT_PATH=/var/lib/docker
       DEVS=/dev/vdb
       VG=docker-vg
-      EXTRA_STORAGE_OPTIONS="--storage-opt dm.basesize=3G"
+      EXTRA_STORAGE_OPTIONS="--storage-opt overlay2.size=3G"
     dest: /etc/sysconfig/docker-storage-setup
 
 - name: Run docker-storage-setup

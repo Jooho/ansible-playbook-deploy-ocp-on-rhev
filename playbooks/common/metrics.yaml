@@ -7,7 +7,7 @@
       - always
 
 - name: Deploy metrics
-  include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml
+  include: "{{metrics_yaml_path}}"
   vars:
      openshift_metrics_install_metrics: True
      openshift_metrics_hawkular_hostname: "hawkular-metrics.{{ocp_cluster_subdomain}}"
@@ -16,7 +16,7 @@
   - deploy
 
 - name: Upgrade metrics
-  include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml
+  include: "{{metrics_yaml_path}}"
   vars:
      openshift_hosted_metrics_deploy: true 
      openshift_hosted_metrics_deployer_version: "v{{ocp_version}}"
@@ -26,7 +26,7 @@
   - upgrade
 
 - name: Delete metrics
-  include: "/usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml openshift_metrics_install_metrics=false"
+  include: "{{metrics_yaml_path}}" openshift_metrics_install_metrics=false"
   when: operate == 'undeploy' and target is not defined
   tags:
   - undeploy

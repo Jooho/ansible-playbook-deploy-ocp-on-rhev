@@ -5,7 +5,7 @@ deployment_type: openshift-enterprise
 debug_level: 2
 containerized: false
 osm_use_cockpit: true
-openshift_disable_check: [disk_availability,memory_availability]
+openshift_disable_check: disk_availability,memory_availability
 #  - docker_storage
 dynamic_volumes_check: False
 openshift_release: "3.7"
@@ -23,14 +23,17 @@ osm_default_node_selector: "role=app"
 #openshift_master_api_port: 443
 #openshift_master_console_port: 443
 
-#CRIO
-openshift_use_crio: True
+# CRIO
+#openshift_use_crio: True
 # Force the registry to use for the container-engine/crio system container. By default the registry
-openshift_crio_systemcontainer_image_override: "registry.example.com/cri-o:latest"
+#openshift_crio_systemcontainer_image_override: "registry.example.com/cri-o:latest"
 
+# Docker
+openshift_docker_options: '--log-driver=json-file --signature-verification=False --selinux-enabled --log-opt max-size=1M --log-opt max-file=3 -l warn --ipv6=false'
 
 # Identity
 openshift_master_identity_providers: [{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider', 'filename': '/etc/origin/master/htpasswd'}]
+openshift_master_htpasswd_users: {'joe': '$apr1$e/IdW2fy$C81mY.UvlYLTjbsg3zvG./', 'sue': '$apr1$WnnI.8Ce$KDA5pr/UsmS3wtL5lEr7d/'}
 
 
 # Networking
@@ -134,10 +137,11 @@ openshift_prometheus_alertbuffer_storage_type: 'pvc'
 openshift_prometheus_alertbuffer_storage_class: managed-nfs-storage
 
 # CFME project
-openshift_management_project: openshift-management
-openshift_management_project_description: CloudForms Management Engine
-openshift_management_app_template: miq-template
-openshift_management_storage_class: managed-nfs-storage
+#openshift_management_project: openshift-management
+#openshift_management_project_description: CloudForms Management Engine
+#openshift_management_app_template: cfme-template
+#openshift_management_storage_class: managed-nfs-storage
+#openshift_management_template_parameters={'APPLICATION_MEM_REQ': '3000Mi', 'POSTGRESQL_MEM_REQ': '1Gi', 'ANSIBLE_MEM_REQ': '512Mi', 'APPLICATION_VOLUME_CAPACITY': '5Gi', 'DATABASE_VOLUME_CAPACITY': '10Gi'}
 #openshift_management_storage_nfs_external_hostname: "{{nfs_server_ip}}"
 #openshift_management_storage_nfs_base_dir: "{{nfs_mount_point}}"
 

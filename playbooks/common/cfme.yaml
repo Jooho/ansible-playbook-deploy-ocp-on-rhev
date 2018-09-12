@@ -6,4 +6,4 @@
       tags:
       - always
 
-- include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-management/config.yml
+- include: "{{cfme_yaml_path}}"

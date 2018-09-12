@@ -6,4 +6,4 @@
       tags:
       - always
 
-- include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-prometheus.yml
+- include: "{{prometheus_yaml_path}}"

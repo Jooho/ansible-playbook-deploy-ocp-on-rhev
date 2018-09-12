@@ -6,4 +6,4 @@
       tags:
       - always
 
-- include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/service-catalog.yml
+- include: "{{service_catalog_yaml_path}}"

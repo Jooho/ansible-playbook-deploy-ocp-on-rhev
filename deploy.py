@@ -286,8 +286,8 @@ def launch(provider=None,
                 % (verbosity, sio.getvalue(),deploy_type)
                   
             )
- 
-    if deploy_type == 'ocp' and (operate == 'install' or operate == 'deploy'):
+    print "%s" %(status) 
+    if status == 0 and deploy_type == 'ocp' and (operate == 'install' or operate == 'deploy'):
         status = os.system(
              'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml' 
 

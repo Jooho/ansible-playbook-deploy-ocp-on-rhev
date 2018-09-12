@@ -3,7 +3,7 @@ Tested Scripts
 
 
 Architecture (1 LB x 3 Master x 3 Infa x 2 App) with ocp_param_min ( Registry/Router/Metrics/Logging )
-Architecture (1 LB x 3 Master x 3 Infa x 5 App) with ocp_param_full ( Registry/Router/Metrics/Logging/Prometheus/Service Catalog/CFME)
+Architecture (1 LB x 3 Master x 3 Infa x 5 App) with ocp_param_full ( Registry/Router/Metrics/Logging/Prometheus/Service Catalog)
 
 | Main Command|         Scenario       | Result|
 |--------|------------------------|-------|

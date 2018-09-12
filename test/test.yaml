@@ -1,4 +1,9 @@
-    
+- hosts: masters,nodes
+  tasks:
+    - command: echo $(hostname)   
+
+
+ 
 - hosts: localhost
   tasks:
      - set_fact:
