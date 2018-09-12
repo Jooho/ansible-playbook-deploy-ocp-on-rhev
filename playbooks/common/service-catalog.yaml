@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  tasks: 
+    - name: Update groups
+      include: "../{{provider}}/tasks/generate-host-groups.yaml"
+      tags:
+      - always
+
+- include: "{{service_catalog_yaml_path}}"

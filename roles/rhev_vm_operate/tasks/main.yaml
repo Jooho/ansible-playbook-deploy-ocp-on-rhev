@@ -1,0 +1,16 @@
+---
+
+- name: Operation
+  ovirt_vms:
+    name: "{{item.name}}"
+    cluster: "{{rhev.cluster}}"
+    auth:
+      username: "{{rhev.id}}"
+      password: "{{rhev.pw}}"
+      url: "{{rhev.api_url}}"
+      ca_file: "{{rhev.ca_file}}"
+    operating_system: "{{base_image.os}}_{{base_image.rhev_os_type}}"
+    state: "{{vm_operate}}"
+  with_items:
+    - "{{target_vm_list}}"
+

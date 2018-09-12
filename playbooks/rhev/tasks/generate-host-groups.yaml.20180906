@@ -1,94 +1,59 @@
 ---
-- set_fact:
-    target_cluster: "{{ target_cluster_tag|default(cluster_tag) }}"
 
 - name: Watiting until fqdn is set
   block:
-    - name: Gather Master Nodes VMs info
+    - name: Gather Master VMs info
       ovirt_vms_facts:
-        pattern: "{{prefix_vm}}*{{target_cluster}}*{{master_node_prefix}}"
+        pattern: "name={{item.vm.name}}"
         auth:
           username: "{{rhev.id}}"
           password: "{{rhev.pw}}"
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
-      register: master_vms_info
-      when: (master_node_vms is defined and master_node_vms > 0 and j_deploy_type == 'ocp')
-
-    - name: Check if the master server's fqdn is set or not
-      ovirt_vms_facts:
-        pattern: "name={{item.name}}"
-        auth:
-          username: "{{rhev.id}}"
-          password: "{{rhev.pw}}"
-          url: "{{rhev.api_url}}"
-          ca_file: "{{rhev.ca_file}}"
-      with_items: "{{master_vms_info.ansible_facts.ovirt_vms}}"
-      register: vm_info
-      until: vm_info.ansible_facts.ovirt_vms[0].fqdn is defined
+      with_items: "{{created_master_vms_info.results}}"
+      register: vms_info
+      until: vms_info.ansible_facts.ovirt_vms[0].fqdn is defined
       ignore_errors: yes
       retries: 60
       delay: 10
       when: (master_node_vms is defined and master_node_vms > 0 and j_deploy_type == 'ocp')
-   
-    - name: Gather Infra Nodes VMs info
+    
+    - name: Gather Infra VMs info
       ovirt_vms_facts:
-        pattern: "{{prefix_vm}}*{{target_cluster}}*{{infra_node_prefix}}"
-        auth:
-          username: "{{rhev.id}}"
-          password: "{{rhev.pw}}"
-          url: "{{rhev.api_url}}"
-          ca_file: "{{rhev.ca_file}}"
-      register: infra_vms_info
-      when: (infra_node_vms is defined and infra_node_vms > 0 and j_deploy_type=='ocp')
-
-    - name: Check if the infra server's fqdn is set or not
-      ovirt_vms_facts:
-        pattern: "name={{item.name}}"
+        pattern: "name={{item.vm.name}}"
         auth:
           username: "{{rhev.id}}"
           password: "{{rhev.pw}}"
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
       with_items:
-        - "{{infra_vms_info.ansible_facts.ovirt_vms}}"
-      register: vm_info
-      until: vm_info.ansible_facts.ovirt_vms[0].fqdn is defined
-      ignore_errors: yes
-      retries: 60
-      delay: 10
+        - "{{created_infra_node_vms_info.results}}"
       when: (infra_node_vms is defined and infra_node_vms > 0 and j_deploy_type=='ocp')
-   
-    - name: Gather ETCD Nodes VMs info
+      register: vms_info
+      until: vms_info.ansible_facts.ovirt_vms[0].fqdn is defined
+      ignore_errors: yes
+      retries: 60
+      delay: 10
+    
+    - name: Gather ETCD VMs info
       ovirt_vms_facts:
-        pattern: "{{prefix_vm}}*{{target_cluster}}*{{etcd_node_prefix}}"
+        pattern: "name={{item.vm.name}}"
         auth:
           username: "{{rhev.id}}"
           password: "{{rhev.pw}}"
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
+      with_items: "{{created_etcd_node_vms_info.results}}"
       register: etcd_vms_info
-      when: etcd_node_vms is defined and etcd_node_vms > 0 and j_deploy_type == 'ocp'
- 
-    - name: Check if the etcd server's fqdn is set or not
-      ovirt_vms_facts:
-        pattern: "name={{item.name}}"
-        auth:
-          username: "{{rhev.id}}"
-          password: "{{rhev.pw}}"
-          url: "{{rhev.api_url}}"
-          ca_file: "{{rhev.ca_file}}"
-      with_items: "{{etcd_vms_info.ansible_facts.ovirt_vms}}"
-      register: vm_info
-      until: vm_info.ansible_facts.ovirt_vms[0].fqdn is defined
+      until: etcd_vms_info.ansible_facts.ovirt_vms[0].fqdn is defined
       ignore_errors: yes
       retries: 60
       delay: 10
       when: etcd_node_vms is defined and etcd_node_vms > 0 and j_deploy_type == 'ocp'
-   
-    - name: Gather LB Nodes VMs info
+    
+    - name: Gather LB VM info
       ovirt_vms_facts:
-        pattern: "{{prefix_vm}}*{{target_cluster}}*{{lb_node_prefix}}"
+        pattern: "name={{created_lb_node_vm_info.vm.name}}"
         auth:
           username: "{{rhev.id}}"
           password: "{{rhev.pw}}"
@@ -96,21 +61,10 @@
           ca_file: "{{rhev.ca_file}}"
       register: lb_vms_info
       when: master_node_vms|int > 1 and j_deploy_type == 'ocp'
- 
-    - name: Check if the lb server's fqdn is set or not
-      ovirt_vms_facts:
-        pattern: "name={{lb_vms_info.ansible_facts.ovirt_vms[0].name}}"
-        auth:
-          username: "{{rhev.id}}"
-          password: "{{rhev.pw}}"
-          url: "{{rhev.api_url}}"
-          ca_file: "{{rhev.ca_file}}"
-      register: vm_info
-      until: vm_info.ansible_facts.ovirt_vms[0].fqdn is defined
+      until: lb_vms_info.ansible_facts.ovirt_vms[0].fqdn is defined
       ignore_errors: yes
       retries: 60
       delay: 10
-      when: master_node_vms|int > 1 and j_deploy_type == 'ocp'
     
 - name: Add masters to host groups
   add_host:

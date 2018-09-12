@@ -3,21 +3,29 @@
   tasks:
     - name: Update groups
       include: "../{{provider}}/tasks/generate-host-groups.yaml"
-
+      tags:
+      - always
+      
 - name: Deploy EFK
-  include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml
+  include: "{{logging_yaml_path}}"
   when: operate == 'deploy' 
+  tags:
+  - deploy
 
 - name: Upgrade EFK
-  include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml
+  include: "{{logging_yaml_path}}"
   vars:
     openshift_hosted_logging_deploy: true 
     openshift_hosted_logging_deployer_version: v"{{ocp_version}}"
   when: operate == 'upgrade' 
+  tags:
+  - upgrade
 
 - name: Delete EFK
-  include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml
+  include: "{{logging_yaml_path}}"
   vars:
     openshift_logging_install_logging: False
   when: operate == 'undeploy' 
+  tags:
+  - undeploy
 

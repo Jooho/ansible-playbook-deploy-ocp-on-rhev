@@ -1,0 +1,17 @@
+base_image:
+  os: rhel
+  version: 7u5
+  rhev_os_type: 7x64
+  id: "{{lookup('env', 'BASE_IMAGE_ID')}}"
+  pw: "{{lookup('env', 'BASE_IMAGE_PW')}}"
+
+rhev:
+  template: RHEL_7U5_for_OCP
+  cluster: Test
+  id: "{{lookup('env', 'OVIRT_USERNAME')}}"
+  pw: "{{lookup('env', 'OVIRT_PASSWORD')}}"
+  ca_file: "{{lookup('env', 'OVIRT_CA_PATH')}}"
+  api_url: "{{lookup('env', 'OVIRT_API_URL')}}"
+
+target_vm_list: ""
+operate: "Running"

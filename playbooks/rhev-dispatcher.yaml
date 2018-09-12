@@ -29,17 +29,17 @@
   - bg_upgrade
   when: j_deploy_type == 'bg_upgrade' and target == 'node' and operate == 'warmup'
 
-- name: Metrics 
-  include: ./common/metrics.yaml
-  tags: 
-  - metrics
-  when: j_deploy_type == 'metrics' 
+#- name: Metrics 
+#  include: ./common/metrics.yaml
+#  tags: 
+#  - metrics
+#  when: j_deploy_type == 'metrics' 
 
-- name: EFK
-  include: ./common/logging.yaml
-  tags: 
-  - logging
-  when: j_deploy_type == 'logging' 
+#- name: EFK
+#  include: ./common/logging.yaml
+#  tags: 
+#  - logging
+#  when: j_deploy_type == 'logging' 
 
 - name: Create RHEV VM and Set Up all Hosts for OCP Installation and Install ocp cluster
   include: ./rhev/ocp/ocp.yaml

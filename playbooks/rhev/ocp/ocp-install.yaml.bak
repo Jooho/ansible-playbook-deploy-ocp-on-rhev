@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  pre_tasks:
+    - name: set concurrent path
+      local_action: command pwd
+      register: pwd
+
+    - name: set_facts - pwd_path
+      set_fact:
+         pwd_path: "{{pwd.stdout| regex_replace('/[^/]+/[^/]+/[^/]*$','')}}"
+  tasks:
+    - set_fact:
+        ansible_controller_ip: "{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}"
+    - name: Check validation for ocp cluster
+      include: ./validate.yaml
+
+    - debug: var=ansible_controller_ip
+    - debug: msg="{{hostvars['localhost']['pwd_path']}}"
+
+    - name: Update groups
+      include: ../tasks/generate-host-groups-ocp.yaml
+
+
+# Run cluster installation playbook
+- include: /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml

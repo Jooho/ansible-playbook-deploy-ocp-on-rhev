@@ -1,7 +1,7 @@
 # Distinguish Each Cluster
 # tag: 36
 prefix_vm: jlee
-tag: 37-0905
+tag: 37-0911
 timestamp: "{{ lookup('pipe', 'date +%m%d') }}"
 default_cluster_tag: "{{ocp_short_version}}_{{timestamp}}"
 cluster_tag: "{{tag|default(default_cluster_tag)}}"
@@ -18,14 +18,14 @@ ansible_controller_hostname: ansible.example.com
 # Base Image Info
 base_image:
   os: rhel
-  version: 7u3
+  version: 7u5
   rhev_os_type: 7x64
   id: "{{lookup('env', 'BASE_IMAGE_ID')}}"
   pw: "{{lookup('env', 'BASE_IMAGE_PW')}}"
 
 # RHEV Info
 rhev:
-  template: RHEL_7U3_for_OCP
+  template: RHEL_7U5_for_OCP
   cluster: Test
   id: "{{lookup('env', 'OVIRT_USERNAME')}}"
   pw: "{{lookup('env', 'OVIRT_PASSWORD')}}"
@@ -38,8 +38,8 @@ subs:
   pw: "{{lookup('env', 'RHSM_PW')}}"
   broker_sub_pool_id: "{{lookup('env', 'BROKER_SUB_POOL_ID')}}"
   node_sub_pool_id: "{{lookup('env', 'NODE_SUB_POOL_ID')}}"
-  broker_sub_pool: "{{lookup('env', 'BROKER_SUB_POOL')}}" 
-  node_sub_pool:  "{{lookup('env', 'NODE_SUB_POOL')}}" 
+#  broker_sub_pool: "{{lookup('env', 'BROKER_SUB_POOL')}}" 
+#  node_sub_pool:  "{{lookup('env', 'NODE_SUB_POOL')}}" 
 #  broker_sub_pool: "Employee SKU"
 #  node_sub_pool: "Employee SKU"
 #  broker_sub_pool: "Red Hat OpenShift Container Platform Broker/Master Infrastructure"
@@ -61,7 +61,7 @@ ocp_master_cluster_hostname: "masters-{{cluster_tag}}.{{ocp_dns_domain}}"
 # etcd_node_vms
 master_node_vms: 3
 infra_node_vms: 3
-app_node_vms: 2
+app_node_vms: 5
 master_node_prefix: master
 infra_node_prefix: infra
 app_node_prefix: app
@@ -86,6 +86,9 @@ nfs_block_dev_name: vdc
 # ETC
 loglevel: debug
 
+# When the new version of ansible example hosts file need to save with variable format (= => :), set false
+#reformat_vars_to_hosts: false
+
 # Interim DNS
 # Rewrite DNS configuration, set rewrite_conf is true
 # rewrite_conf: true
@@ -97,4 +100,9 @@ interim_dns:
     - 10.11.5.4
     - 10.11.5.3
 
-
+# Do not change
+prometheus_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-prometheus.yml
+cfme_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-management/config.yml
+metrics_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml
+logging_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml
+service_catalog_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/service-catalog.yml

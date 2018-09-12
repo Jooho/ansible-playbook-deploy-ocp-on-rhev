@@ -36,6 +36,13 @@ This script help deploy OpenShift on RHEV and also provide some more features fo
 - [Blue Green Upgrade](./docs/bg-upgrade.md)
   
 
-
+### Post Installation
+- [NFS Provisioner](https://github.com/Jooho/openshift-first-touch/blob/master/docs/storage/nfs/nfs-client-provisioner.md)
+- [Metrics PV](./docs/metrics_pv.md)
+- [Logging PV](./docs/logging_pv.md)
+- [Prometheus PV](./docs/prometheus_pv.md)
+- [Service Catalog PV](./docs/service_catalog_pv.md)
+- [CFME PV](./docs/cfme_pv.md)
+- [Full Architecture](./docs/ocp_full_post_install.md)( 1 x LB, 3 x Master, 3 x Infra, 5 x App )
 
 

@@ -3,27 +3,33 @@
   tasks: 
     - name: Update groups
       include: "../{{provider}}/tasks/generate-host-groups.yaml"
+      tags:
+      - always
 
 - name: Deploy metrics
-  include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml
+  include: "{{metrics_yaml_path}}"
   vars:
      openshift_metrics_install_metrics: True
      openshift_metrics_hawkular_hostname: "hawkular-metrics.{{ocp_cluster_subdomain}}"
   when: operate == 'deploy' and target is not defined
+  tags:
+  - deploy
 
 - name: Upgrade metrics
-  include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml
+  include: "{{metrics_yaml_path}}"
   vars:
      openshift_hosted_metrics_deploy: true 
      openshift_hosted_metrics_deployer_version: "v{{ocp_version}}"
      openshift_metrics_hawkular_hostname: "hawkular-metrics.{{ocp_cluster_subdomain}}"
   when: operate == 'upgrade' and target is not defined
+  tags:
+  - upgrade
 
 - name: Delete metrics
-  include: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml
-  vars:
-    openshift_metrics_install_metrics: False
+  include: "{{metrics_yaml_path}}" openshift_metrics_install_metrics=false"
   when: operate == 'undeploy' and target is not defined
+  tags:
+  - undeploy
 
 - hosts: masters[0]
   tasks: 
@@ -45,10 +51,15 @@
             - "oc process -f /tmp/hawkular-openshift-agent.yaml | oc create -n default -f -"
             - "oc adm policy add-cluster-role-to-user hawkular-openshift-agent system:serviceaccount:default:hawkular-openshift-agent"
       when: operate == 'deploy' and target is defined and target == 'agent'
+      tags:
+      - deploy
     
     - name: Undeploy metrics agent
       command: "oc delete all,secrets,sa,templates,configmaps,daemonsets,clusterroles --selector=metrics-infra=agent -n default"
       when: operate == 'undeploy' and target is defined and target == 'agent' 
+      tags:
+      - undeploy
+  
 
    
      

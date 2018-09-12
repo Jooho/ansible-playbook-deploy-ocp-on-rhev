@@ -13,12 +13,12 @@ from StringIO import StringIO
               show_default=True)
 @click.option('--deploy_type',
               default='ocp',
-              type=click.Choice(['nfs','ansible-controller', 'ocp', 'scale', 'bg_upgrade', 'logging', 'metrics' ]),
+              type=click.Choice(['nfs','ansible-controller', 'ocp', 'scale', 'bg_upgrade', 'logging', 'metrics', 'prometheus','cfme', 'service-catalog' ]),
               help='This option specifies main commands : deploying a new cluster, scaling up/down nodes, blue green upgrade',
               show_default=True)
 @click.option('--operate',
               default='deploy',
-              type=click.Choice(['create', 'config', 'deploy', 'undeploy', 'start', 'stop', 'teardown', 'up', 'down', 'warmup', 'upgrade']),
+              type=click.Choice(['create', 'config', 'deploy', 'install', 'undeploy', 'start', 'stop', 'teardown', 'up', 'down', 'warmup', 'upgrade']),
               help='This option specifies sub commands : deploying a new cluster, start/stop/teardown VMs, scaling up/down')
 @click.option('--tag',
               help='The tag of cluster used for targeting specific cluster operated to. It will overwrite the value from vars/all ')
@@ -65,7 +65,7 @@ def launch(provider=None,
             print "[Not Valid Options] - --target option is for scale/bg_upgrade"
             sys.exit(1)
 
-        if operate not in ['deploy', 'start', 'stop', 'teardown']:
+        if operate not in ['deploy', 'start', 'stop', 'teardown','install']:
             print "[Not Valid Operate] - '%s' only allowed for ocp" %operate
             sys.exit(1)
 
@@ -167,18 +167,133 @@ def launch(provider=None,
             % (verbosity, sio.getvalue())
               
         )
-
-
-    else:
+    
+    elif deploy_type == 'metrics' and operate == 'deploy':
         status = os.system(
-            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/config.yaml \
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/metrics.yaml \
             --extra-vars "@vars/all" \
             --extra-vars "@vars/ocp_params" \
-            -e "%s" --tags "%s"'
+            -e openshift_metrics_install_metrics=true \
+            -e "%s" --tags=always,"%s" '
 
-            % (verbosity, sio.getvalue(),deploy_type)
+            % (verbosity, sio.getvalue(), operate)
               
         )
+
+    elif deploy_type == 'metrics' and operate == 'undeploy':
+        status = os.system(
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/metrics.yaml \
+            --extra-vars "@vars/all" \
+            --extra-vars "@vars/ocp_params" \
+            -e openshift_metrics_install_metrics=false \
+            -e "%s" --tags=always,"%s" '
+
+            % (verbosity, sio.getvalue(), operate)
+              
+        )
+
+    elif deploy_type == 'prometheus' and operate == 'deploy':
+        status = os.system(
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/prometheus.yaml \
+            --extra-vars "@vars/all" \
+            --extra-vars "@vars/ocp_params" \
+            -e openshift_hosted_prometheus_deploy=true \
+            -e "%s" '
+
+            % (verbosity, sio.getvalue())
+              
+        )
+
+    elif deploy_type == 'prometheus' and operate == 'undeploy':
+        status = os.system(
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/prometheus.yaml \
+            --extra-vars "@vars/all" \
+            --extra-vars "@vars/ocp_params" \
+            -e openshift_prometheus_state=absent \
+            -e "%s" '
+
+            % (verbosity, sio.getvalue())
+              
+        )
+
+    elif deploy_type == 'cfme' and operate == 'deploy':
+        status = os.system(
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/cfme.yaml \
+            --extra-vars "@vars/all" \
+            --extra-vars "@vars/ocp_params" \
+            -e "%s" '
+
+            % (verbosity, sio.getvalue())
+              
+        )
+
+    elif deploy_type == 'service-catalog' and operate == 'deploy':
+        status = os.system(
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/service-catalog.yaml \
+            --extra-vars "@vars/all" \
+            --extra-vars "@vars/ocp_params" \
+            -e "%s" '
+
+            % (verbosity, sio.getvalue())
+              
+        )
+
+    elif deploy_type == 'service-catalog' and operate == 'undeploy':
+        status = os.system(
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/service-catalog.yaml \
+            --extra-vars "@vars/all" \
+            --extra-vars "@vars/ocp_params" \
+            -e openshift_enable_service_catalog=false \
+            -e "%s" '
+
+            % (verbosity, sio.getvalue())
+              
+        )
+
+
+
+    elif deploy_type == 'logging' and operate == 'deploy':
+        status = os.system(
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/logging.yaml \
+            --extra-vars "@vars/all" \
+            --extra-vars "@vars/ocp_params" \
+            -e "%s" --tags=always,"%s" '
+
+            % (verbosity, sio.getvalue(), operate)
+              
+        )
+    
+    elif deploy_type == 'logging' and operate == 'undeploy':
+        status = os.system(
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/logging.yaml \
+            --extra-vars "@vars/all" \
+            --extra-vars "@vars/ocp_params" \
+            -e openshift_logging_install_logging=false \
+            -e "%s" --tags=always,"%s" '
+
+            % (verbosity, sio.getvalue(), operate)
+              
+        )
+    
+    else:
+        if deploy_type != 'prometheus' and deploy_type != 'logging' and deploy_type != 'metrics' and  operate != 'install':
+            status = os.system(
+                'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/config.yaml \
+                --extra-vars "@vars/all" \
+                --extra-vars "@vars/ocp_params" \
+                -e "%s" --tags always,"%s"'
+ 
+                % (verbosity, sio.getvalue(),deploy_type)
+                  
+            )
+    print "%s" %(status) 
+    if status == 0 and deploy_type == 'ocp' and (operate == 'install' or operate == 'deploy'):
+        status = os.system(
+             'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml' 
+
+             % (verbosity, provider)
+        )
+ 
 
     # Exit appropriately
     if os.WIFEXITED(status) and os.WEXITSTATUS(status) != 0:

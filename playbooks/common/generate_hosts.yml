@@ -1,0 +1,29 @@
+---
+- hosts: localhost
+  pre_tasks:
+  - name: set concurrent path
+    local_action: command pwd
+    register: pwd
+
+  - name: set_facts - pwd_path
+    set_fact:
+       pwd_path: "{{pwd.stdout| regex_replace('/[^/]+/[^/]*$','')}}"
+
+  - name: Update groups
+    include: "../{{provider}}/tasks/generate-host-groups-ocp.yaml"
+
+
+  tasks:
+    - name: generate host file
+      include_role:
+        name: generate_hosts_file
+      vars:
+        ocp_param_path: "{{pwd_path}}/vars/ocp_params"
+#        reformat_vars_to_hosts: false
+
+
+# In order to reformat ansible hosts file to variable style, set reformat_vars_to_hosts to true (default is true)
+# Before executing ansible script, you need to copy the official hosts file to ./vars/official_inventory_hosts
+
+# Command
+# ansible-playbook  ./playbook/common/generate_hosts.yml -vvvv -e @vars/all -e "{reformat_vars_to_hosts: true}"
