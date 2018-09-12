@@ -24,7 +24,7 @@
       meta: refresh_inventory
 
     - name: Update groups
-      include: ../tasks/generate-host-groups-ocp.yaml
+      include: ../tasks/generate-host-groups.yaml
 
     - name: generate host file
       include_role:

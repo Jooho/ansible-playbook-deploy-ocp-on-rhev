@@ -33,7 +33,7 @@
       when: not retry_scale|bool
 
     - name: Update cluster groups
-      include: ../tasks/generate-host-groups-ocp.yaml
+      include: ../tasks/generate-host-groups.yaml
 
     - name: Update scale groups
       include: ../tasks/generate-host-groups-scale.yaml
