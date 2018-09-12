@@ -8,9 +8,9 @@ osm_use_cockpit: true
 openshift_disable_check: disk_availability,memory_availability
 #  - docker_storage
 dynamic_volumes_check: False
-openshift_release: "3.7"
+openshift_release: "3.9"
 openshift_deployment_type: openshift-enterprise
-#openshift_version: "3.7"
+#openshift_version: "3.9"
 #openshift_pkg_version: "-3.7.42-1.git.0.5a85d33.el7"
 #docker_version: "1.12.6"
 
@@ -78,10 +78,10 @@ openshift_metrics_storage_volume_size: 5Gi
 #openshift_metrics_hawkular_hostname: hawkular-metrics.example.com
 # Configure the prefix and version for the component images
 #openshift_metrics_image_prefix: docker.io/openshift/origin-
-#openshift_metrics_image_version: v3.7
+#openshift_metrics_image_version: v3.9
 # when openshift_deployment_type: 'openshift-enterprise'
 #openshift_metrics_image_prefix: registry.access.redhat.com/openshift3/
-#openshift_metrics_image_version: v3.7
+#openshift_metrics_image_version: v3.9
 #openshift_metrics_storage_kind: dynamic
 
 
@@ -103,10 +103,10 @@ openshift_logging_es_nodeselector: "{'role': 'infra'}"
 #openshift_logging_es_cluster_size: 1
 # Configure the prefix and version for the component images
 #openshift_logging_image_prefix: docker.io/openshift/origin-
-#openshift_logging_image_version: v3.7.0
+#openshift_logging_image_version: v3.9.0
 # when openshift_deployment_type: ='openshift-enterprise'
 #openshift_logging_image_prefix: registry.access.redhat.com/openshift3/
-#openshift_logging_image_version: 3.7.0
+#openshift_logging_image_version: 3.9.0
 
 
 # Prometheus
@@ -167,7 +167,7 @@ template_service_broker_selector: {'region': 'infra'}
 #openshift_service_catalog_image_prefix: docker.io/openshift/origin-
 #openshift_service_catalog_image_prefix: registry.access.redhat.com/openshift3/ose-
 # Force a specific image version to use when pulling the service catalog image
-#openshift_service_catalog_image_version: v3.7
+#openshift_service_catalog_image_version: v3.9
 
 # Configure one of more namespaces whose templates will be served by the TSB
 #openshift_template_service_broker_namespaces: ['openshift']

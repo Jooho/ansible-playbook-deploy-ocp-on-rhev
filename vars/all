@@ -1,7 +1,7 @@
 # Distinguish Each Cluster
 # tag: 36
 prefix_vm: jlee
-tag: 37-0911
+tag: 39-0911
 timestamp: "{{ lookup('pipe', 'date +%m%d') }}"
 default_cluster_tag: "{{ocp_short_version}}_{{timestamp}}"
 cluster_tag: "{{tag|default(default_cluster_tag)}}"
@@ -48,7 +48,7 @@ subs:
 # OpenShift Info
 # package_version: 3.7.14
 
-ocp_version: 3.7
+ocp_version: 3.9
 ocp_short_version: "{{ocp_version|regex_replace('\\.')}}"
 ocp_dns_domain: gsslab.rdu2.redhat.com
 ocp_cluster_subdomain: "cloudapps-{{cluster_tag}}.{{ocp_dns_domain}}"
@@ -101,8 +101,11 @@ interim_dns:
     - 10.11.5.3
 
 # Do not change
-prometheus_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-prometheus.yml
-cfme_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-management/config.yml
-metrics_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml
-logging_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-logging.yml
-service_catalog_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/service-catalog.yml
+prometheus_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-prometheus/config.yml
+cfme_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-management/config.yml
+metrics_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-metrics/config.yml
+logging_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-logging/config.yml
+service_catalog_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-service-catalog/config.yml
+webconsole_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-web-console/config.yml
+healthcheck_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-checks/pre-install.yml
+nfs_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-nfs/config.yml
