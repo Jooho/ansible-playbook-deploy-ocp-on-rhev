@@ -8,11 +8,12 @@ osm_use_cockpit: true
 openshift_disable_check: disk_availability,memory_availability
 #  - docker_storage
 dynamic_volumes_check: False
-openshift_release: "3.9"
+openshift_enable_unsupported_configurations=True
+openshift_release: "v3.9"
 openshift_deployment_type: openshift-enterprise
 #openshift_version: "3.9"
 #openshift_pkg_version: "-3.7.42-1.git.0.5a85d33.el7"
-#docker_version: "1.12.6"
+docker_version: "1.13.1"
 
 # Cluster
 openshift_master_default_subdomain: "{{ocp_cluster_subdomain}}"
@@ -20,19 +21,24 @@ openshift_master_cluster_hostname: "masters-{{hostvars['localhost'].cluster_tag}
 openshift_master_cluster_public_hostname: "{% if 'lb' in groups%}{{groups['lb'][0]}}{% else %}{{openshift_master_cluster_hostname}}{% endif %}"
 openshift_master_cluster_method: "native"
 osm_default_node_selector: "role=app"
+#openshift_docker_use_system_container=True
+#openshift_use_etcd_system_container=True
 #openshift_master_api_port: 443
 #openshift_master_console_port: 443
 
 # Enable API service auditing
-openshift_master_audit_config={"enabled": true}
-openshift_master_audit_config={"enabled": true, "auditFilePath": "/var/log/openpaas-oscp-audit/openpaas-oscp-audit.log", "maximumFileRetentionDays": 14, "maximumFileSizeMegabytes": 500, "maximumRetainedFiles": 5}
+openshift_master_audit_config: {"enabled": true, "auditFilePath": "/var/log/openpaas-oscp-audit/openpaas-oscp-audit.log", "maximumFileRetentionDays": 14, "maximumFileSizeMegabytes": 500, "maximumRetainedFiles": 5}
 
 
 
 # CRIO
-#openshift_use_crio: True
+openshift_use_crio=true
+openshift_crio_use_rpm=true
+openshift_crio_enable_docker_gc=true
+openshift_crio_docker_gc_node_selector={'zone': 'default'}
 # Force the registry to use for the container-engine/crio system container. By default the registry
 #openshift_crio_systemcontainer_image_override: "registry.example.com/cri-o:latest"
+
 
 # Docker
 openshift_docker_options: '--log-driver=json-file --signature-verification=False --selinux-enabled --log-opt max-size=1M --log-opt max-file=3 -l warn --ipv6=false'
@@ -51,8 +57,8 @@ osm_host_subnet_length: "8"
 
 # Registry
 # Validity of the auto-generated certificate in days (optional)
+openshift_registry_selector='region=infra'
 openshift_hosted_registry_cert_expire_days: 730
-openshift_hosted_registry_selector: 'region=infra'
 openshift_hosted_registry_storage_kind: nfs
 openshift_hosted_registry_storage_access_modes: ['ReadWriteMany']
 openshift_hosted_registry_storage_host: "{{nfs_server_ip}}"
@@ -63,10 +69,12 @@ openshift_hosted_registry_storage_volume_name: registry
 openshift_hosted_registry_storage_volume_size: 5Gi
 
 # Router
-openshift_hosted_router_selector: 'region=infra'
+openshift_router_selector: 'region=infra'
+
 
 # Metrics
 openshift_metrics_install_metrics: true
+openshift_metrics_cassandra_storage_type: dynamic
 openshift_metrics_storage_kind: dynamic
 openshift_metrics_storage_volume_size: 5Gi
 #openshift_metrics_storage_kind: nfs
@@ -88,9 +96,10 @@ openshift_metrics_storage_volume_size: 5Gi
 # Logging
 openshift_logging_install_logging: true
 openshift_logging_storage_kind: dynamic
+openshift_logging_es_pvc_dynamic: true
 openshift_logging_es_memory_limit: 4G
 openshift_logging_storage_volume_size: 5Gi
-openshift_logging_es_nodeselector: "{'role': 'infra'}"
+openshift_logging_es_nodeselector: {"role": "infra"}
 #openshift_logging_storage_kind: nfs
 #openshift_logging_storage_access_modes: ['ReadWriteOnce']
 #openshift_logging_storage_host: "{{nfs_server_ip}}"
@@ -158,6 +167,10 @@ openshift_enable_service_catalog: true
 
 # Service broker
 template_service_broker_install: true
+
+#openshift_service_catalog_image="docker-registry.default.example.com/openshift/ose-service-catalog:${version}"
+#openshift_service_catalog_image_prefix="docker-registry-default.example.com/openshift/ose-"
+#openshift_service_catalog_image_version="v3.9.30"
 
 # TSB node selector
 template_service_broker_selector: {'region': 'infra'}

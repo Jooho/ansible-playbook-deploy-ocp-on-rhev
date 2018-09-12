@@ -45,7 +45,7 @@
 # TO-DO
 # will use redhat_repository module 
 - name: Install the required rpms
-  shell: yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct atomic-openshift-utils atomic-openshift-excluder atomic-openshift-docker-excluder
+  shell: yum install -y wget git yum-utils net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct atomic-openshift-utils atomic-openshift-excluder atomic-openshift-docker-excluder
   register: rpm_install
   async: 1800
   poll: 0

@@ -109,3 +109,5 @@ service_catalog_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/opensh
 webconsole_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-web-console/config.yml
 healthcheck_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-checks/pre-install.yml
 nfs_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-nfs/config.yml
+ocp_install_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
+prequisites_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml

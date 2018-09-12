@@ -10,7 +10,7 @@
        pwd_path: "{{pwd.stdout| regex_replace('/[^/]+/[^/]*$','')}}"
 
   - name: Update groups
-    include: "../{{provider}}/tasks/generate-host-groups-ocp.yaml"
+    include: "../{{provider}}/tasks/generate-host-groups.yaml"
 
 
   tasks:

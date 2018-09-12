@@ -16,7 +16,7 @@
 - import_tasks: ./manage-repositories.yaml
 
 - name: Install essential packages
-  shell: yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct sshpass 
+  shell: yum install -y wget git yum-utils net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct sshpass 
 
 - name: Uninstall the atomic-openshift-utils
   shell: yum remove -y atomic-openshift-utils atomic-openshift-clients openshift-ansible

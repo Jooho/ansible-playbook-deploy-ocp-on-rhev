@@ -51,6 +51,7 @@ def launch(provider=None,
            instances=None,
            ocp_install=None,
            new_cluster_color=None,
+           status=None,
            verbose=0):
 
     # validate ansible-controller deploy_type options
@@ -134,7 +135,6 @@ def launch(provider=None,
 
     sio.write(' '.join(overwrite_variables));
     print sio.getvalue();
-
 
 
 
@@ -286,10 +286,13 @@ def launch(provider=None,
                 % (verbosity, sio.getvalue(),deploy_type)
                   
             )
-    print "%s" %(status) 
+
+    if status == None:
+        status = 0;
     if status == 0 and deploy_type == 'ocp' and (operate == 'install' or operate == 'deploy'):
         status = os.system(
-             'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml' 
+             'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml \
+             --extra-vars "@vars/all" '
 
              % (verbosity, provider)
         )
