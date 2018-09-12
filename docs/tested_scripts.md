@@ -2,8 +2,8 @@ Tested Scripts
 --------------
 
 
-Architecture (1 LB x 3 Master x 3 Infa x 2 App)
-
+Architecture (1 LB x 3 Master x 3 Infa x 2 App) with ocp_param_min ( Registry/Router/Metrics/Logging )
+Architecture (1 LB x 3 Master x 3 Infa x 5 App) with ocp_param_full ( Registry/Router/Metrics/Logging/Prometheus/Service Catalog/CFME)
 
 | Main Command|         Scenario       | Result|
 |--------|------------------------|-------|
@@ -68,28 +68,84 @@ deploy.py --deploy_type=ocp --operate=deploy
 
 
 
-## 3.7 latest test command
+## 3.7 latest tested commands
 ### Ansible Controller
-- ./deploy.py --deploy_type=ansible-controller  --operate=create
-- ./deploy.py --deploy_type=ansible-controller  --operate=config
-- ./deploy.py --deploy_type=ocp --operate=deploy (1 x M , 2 x N)
-  - service catalog is not running well because there is no storageClass
-- ./deploy.py --deploy_type=ocp --operate=install (Install openshift directly)
-- ./deploy.py --deploy_type=ocp --operate=teardown --ocp_install=false
-- ./deploy.py --deploy_type=ocp --operate=stop --tag=37-0619
+*Create Ansible Controller VM*
+```
+./deploy.py --deploy_type=ansible-controller  --operate=create
+```
+* Configure Ansible Controller on existing VM*
+```
+./deploy.py --deploy_type=ansible-controller  --operate=config
+```
+*Deploy OCP*
+Some errors happen because of PV but it is fixed with post installation
+```
+./deploy.py --deploy_type=ocp --operate=deploy 
+```
 
-- ./deploy.py --deploy_type=ocp --operate=deploy
-  - overwrite dns
+*Install OCP on existing VMs or Replay ansible playbook only OCP installation - hosts file must be in /etc/ansible/hosts*
+```
+./deploy.py --deploy_type=ocp --operate=install (Install openshift directly)
+```
+Tip.
+* Overwrite dns information
     ```
     interim_dns:
       rewrite_conf: true
-    ```
-- ./deploy.py --deploy_type=nfs
-   ```
-   nfs_server_ip: dhcp182-21.gsslab.rdu2.redhat.com
-   nfs_mount_point: /exports-nfs
-   nfs_block_dev_name: vdc
-   ```
-- ansible-playbook ./playbooks/common/generate_hosts.yml -e @vars/all -e "{reformat_vars_to_hosts: true}" -e provider=rhev
-- ./deploy.py --deploy_type=metrics --operate=deploy
-- ./deploy.py --deploy_type=metrics --operate=undeploy
+    ```    
+*Delete OCP Cluster*
+```
+./deploy.py --deploy_type=ocp --operate=teardown --ocp_install=false
+```
+*Operate OCP Cluster - stop/start*
+```
+./deploy.py --deploy_type=ocp --operate=stop --tag=37-0619
+```
+
+*Install nfs server - doc*
+```
+ansible-galaxy install -f -r requirements.yaml -p ./roles
+
+./deploy.py --deploy_type=nfs
+```
+- Update Variables
+```
+vi ./var/all
+...
+nfs_server_ip: nfs.example.com
+nfs_mount_point: /exports-nfs
+nfs_block_dev_name: vdc
+```
+
+*Generate Ansible Hosts File*
+```
+ansible-playbook ./playbooks/common/generate_hosts.yml -e @vars/all -e "{reformat_vars_to_hosts: true}" -e provider=rhev
+```
+*Component Install/Uninstall*
+
+- Metrics
+```
+./deploy.py --deploy_type=metrics --operate=deploy
+./deploy.py --deploy_type=metrics --operate=undeploy
+```
+- Prometheus
+```
+./deploy.py --deploy_type=prometheus --operate=deploy
+./deploy.py --deploy_type=prometheus --operate=undeploy
+```
+- Service Catalog
+```
+./deploy.py --deploy_type=service-catalog --operate=deploy
+./deploy.py --deploy_type=service-catalog --operate=undeploy
+```
+- CFME
+```
+./deploy.py --deploy_type=cfme --operate=deploy
+./deploy.py --deploy_type=cfme --operate=undeploy
+```
+- Logging
+```
+./deploy.py --deploy_type=logging --operate=deploy
+./deploy.py --deploy_type=logging --operate=undeploy
+```
