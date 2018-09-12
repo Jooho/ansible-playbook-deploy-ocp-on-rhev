@@ -24,8 +24,8 @@ osm_default_node_selector: "role=app"
 #openshift_master_console_port: 443
 
 # Enable API service auditing
-openshift_master_audit_config={"enabled": true}
-openshift_master_audit_config={"enabled": true, "auditFilePath": "/var/log/openpaas-oscp-audit/openpaas-oscp-audit.log", "maximumFileRetentionDays": 14, "maximumFileSizeMegabytes": 500, "maximumRetainedFiles": 5}
+openshift_master_audit_config: {"enabled": true}
+openshift_master_audit_config: {"enabled": true, "auditFilePath": "/var/log/openpaas-oscp-audit/openpaas-oscp-audit.log", "maximumFileRetentionDays": 14, "maximumFileSizeMegabytes": 500, "maximumRetainedFiles": 5}
 
 
 
@@ -104,7 +104,7 @@ openshift_logging_es_nodeselector: "{'role': 'infra'}"
 # Configure the prefix and version for the component images
 #openshift_logging_image_prefix: docker.io/openshift/origin-
 #openshift_logging_image_version: v3.7.0
-# when openshift_deployment_type: ='openshift-enterprise'
+# when openshift_deployment_type: 'openshift-enterprise'
 #openshift_logging_image_prefix: registry.access.redhat.com/openshift3/
 #openshift_logging_image_version: 3.7.0
 
