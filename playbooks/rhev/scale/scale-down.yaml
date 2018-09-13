@@ -11,7 +11,7 @@
       when: new_cluster_color is defined
   tasks:
     - name: Update ocp groups
-      include: ../tasks/generate-host-groups-ocp.yaml
+      include: ../tasks/generate-host-groups.yaml
 
     - name: Update scale groups
       include: ../tasks/generate-host-groups-scale.yaml

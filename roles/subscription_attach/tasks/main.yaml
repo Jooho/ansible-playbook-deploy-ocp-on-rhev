@@ -2,6 +2,7 @@
 - name: check if the subscription is valid
   shell: "subscription-manager status|grep 'Current'|wc -l"
   register: subs_valid
+  changed_when: false
 
 - name: Unregister Subs because subs is not valid
   redhat_subscription:

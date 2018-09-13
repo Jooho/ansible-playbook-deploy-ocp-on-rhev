@@ -16,7 +16,7 @@
       meta: refresh_inventory
 
     - name: Update cluster groups
-      include: ../tasks/generate-host-groups-ocp.yaml
+      include: ../tasks/generate-host-groups.yaml
 
     - name: Update bg cluster groups
       include: ../tasks/generate-host-groups-bg.yaml
@@ -106,5 +106,5 @@
 
 
 # Deploy Blue Green VMs 
-- import_playbook: /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-node/scaleup.yml
+- import_playbook: "{{ scale_up_node_yaml_path }}"
 

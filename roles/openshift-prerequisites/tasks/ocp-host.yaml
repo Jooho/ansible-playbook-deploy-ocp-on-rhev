@@ -45,7 +45,7 @@
 # TO-DO
 # will use redhat_repository module 
 - name: Install the required rpms
-  shell: yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct atomic-openshift-utils atomic-openshift-excluder atomic-openshift-docker-excluder
+  shell: yum install -y wget git yum-utils net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct atomic-openshift-utils atomic-openshift-excluder atomic-openshift-docker-excluder
   register: rpm_install
   async: 1800
   poll: 0
@@ -74,6 +74,7 @@
     name: docker
     state: present
     update_cache: yes
+  register: docker_install
 
 - name: Configure docker-storage-setup configuration
   copy:
@@ -86,15 +87,18 @@
       VG=docker-vg
       EXTRA_STORAGE_OPTIONS="--storage-opt overlay2.size=3G"
     dest: /etc/sysconfig/docker-storage-setup
+  when: docker_install.changed
 
 - name: Run docker-storage-setup
   command: docker-storage-setup
+  when: docker_install.changed
 
 - name: Start and enable docker
   systemd:
     name: docker
     enabled: yes
     state: started
+  when: docker_install.changed
 
 ## If interim dns is installed, DNS nameserver should be updated
 #- name: Check if iterim dns ip exist in /etc/resolv.conf

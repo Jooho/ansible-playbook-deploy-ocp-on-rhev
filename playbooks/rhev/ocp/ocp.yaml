@@ -24,7 +24,7 @@
       meta: refresh_inventory
 
     - name: Update groups
-      include: ../tasks/generate-host-groups-ocp.yaml
+      include: ../tasks/generate-host-groups.yaml
 
     - name: generate host file
       include_role:
@@ -59,17 +59,21 @@
 # RHSM register subscription
 - hosts: masters{% if (master_node_vms|int > 1) %},lb{% endif %}{% if infra_node_vms is defined and infra_node_vms > 0%},infra_nodes{% endif %}
   gather_facts: false
-  roles:
-    - role: subscription_attach
-      pool_name: "{{subs.broker_sub_pool  | default('false')}}"
-      pool_id: "{{subs.broker_sub_pool_id | default('false')}}"
+  tasks:
+    - import_role:
+        name: subscription_attach
+      vars:
+        pool_name: "{{subs.broker_sub_pool  | default('false')}}"
+        pool_id: "{{subs.broker_sub_pool_id | default('false')}}"
 
 - hosts: app_nodes
   gather_facts: false
-  roles:
-    - role: subscription_attach
-      pool_name: "{{subs.node_sub_pool  | default('false')}}"
-      pool_id: "{{subs.node_sub_pool_id | default('false')}}"
+  tasks:
+    - import_role:
+        name: subscription_attach
+      vars:
+        pool_name: "{{subs.node_sub_pool  | default('false')}}"
+        pool_id: "{{subs.node_sub_pool_id | default('false')}}"
 
 
 - name: Install OCP Host Pre-Requisites
@@ -83,3 +87,4 @@
 
 # Run cluster installation playbook
 #- include: /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
+- include: ./ocp-install.yaml

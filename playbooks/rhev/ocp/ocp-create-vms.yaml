@@ -166,7 +166,7 @@
 # Check fqdn is set. If not, restart the vm
 
 
-- name: Gather Master Nodes VMs Info
+- name: Gather All Nodes VMs Info
   ovirt_vms_facts:
     pattern: "{{prefix_vm}}*{{cluster_tag}}"
     auth:

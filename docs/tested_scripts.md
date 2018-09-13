@@ -68,7 +68,13 @@ deploy.py --deploy_type=ocp --operate=deploy
 
 
 
-## 3.7 latest tested commands
+## 3.9 latest tested commands
+*Prerequisites*
+```
+ ansible-playbook -i /etc/ansible/hosts /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml -vvv
+```
+
+
 ### Ansible Controller
 *Create Ansible Controller VM*
 ```

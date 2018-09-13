@@ -14,7 +14,7 @@
   register: jobs
   until: jobs.finished
   retries: 180
-  delay: 10
+  delay: 5
   when: need_repo_list|difference(enabled_repo_list.stdout_lines)|length != 0 
 
 - name: Enable OpenShift repositories
@@ -32,7 +32,7 @@
   register: jobs
   until: jobs.finished
   retries: 180
-  delay: 10
+  delay: 7
   with_items:
     - "{{ subs_enable.results }}"
   when: need_repo_list|difference(enabled_repo_list.stdout_lines)|length != 0 

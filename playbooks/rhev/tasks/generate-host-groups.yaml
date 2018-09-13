@@ -13,7 +13,7 @@
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
       register: master_vms_info
-      when: (master_node_vms is defined and master_node_vms > 0 and j_deploy_type == 'ocp')
+      when: (master_node_vms is defined and master_node_vms > 0)
 
     - name: Check if the master server's fqdn is set or not
       ovirt_vms_facts:
@@ -29,7 +29,7 @@
       ignore_errors: yes
       retries: 60
       delay: 10
-      when: (master_node_vms is defined and master_node_vms > 0 and j_deploy_type == 'ocp')
+      when: (master_node_vms is defined and master_node_vms > 0)
    
     - name: Gather Infra Nodes VMs info
       ovirt_vms_facts:
@@ -40,7 +40,7 @@
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
       register: infra_vms_info
-      when: (infra_node_vms is defined and infra_node_vms > 0 and j_deploy_type=='ocp')
+      when: (infra_node_vms is defined and infra_node_vms > 0 )
 
     - name: Check if the infra server's fqdn is set or not
       ovirt_vms_facts:
@@ -57,7 +57,7 @@
       ignore_errors: yes
       retries: 60
       delay: 10
-      when: (infra_node_vms is defined and infra_node_vms > 0 and j_deploy_type=='ocp')
+      when: (infra_node_vms is defined and infra_node_vms > 0 )
    
     - name: Gather ETCD Nodes VMs info
       ovirt_vms_facts:
@@ -68,7 +68,7 @@
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
       register: etcd_vms_info
-      when: etcd_node_vms is defined and etcd_node_vms > 0 and j_deploy_type == 'ocp'
+      when: etcd_node_vms is defined and etcd_node_vms > 0 
  
     - name: Check if the etcd server's fqdn is set or not
       ovirt_vms_facts:
@@ -84,7 +84,7 @@
       ignore_errors: yes
       retries: 60
       delay: 10
-      when: etcd_node_vms is defined and etcd_node_vms > 0 and j_deploy_type == 'ocp'
+      when: etcd_node_vms is defined and etcd_node_vms > 0 
    
     - name: Gather LB Nodes VMs info
       ovirt_vms_facts:
@@ -95,7 +95,7 @@
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
       register: lb_vms_info
-      when: master_node_vms|int > 1 and j_deploy_type == 'ocp'
+      when: master_node_vms|int > 1 
  
     - name: Check if the lb server's fqdn is set or not
       ovirt_vms_facts:
@@ -110,7 +110,7 @@
       ignore_errors: yes
       retries: 60
       delay: 10
-      when: master_node_vms|int > 1 and j_deploy_type == 'ocp'
+      when: master_node_vms|int > 1
     
 - name: Add masters to host groups
   add_host:
