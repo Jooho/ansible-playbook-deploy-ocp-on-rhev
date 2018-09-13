@@ -111,3 +111,6 @@ healthcheck_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-
 nfs_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-nfs/config.yml
 ocp_install_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 prequisites_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+scale_up_node_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-node/scaleup.yml
+scale_up_master_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-master/scaleup.yml
+scale_up_etcd_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-etcd/scaleup.yml
