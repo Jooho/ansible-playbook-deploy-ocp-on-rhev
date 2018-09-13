@@ -1,15 +1,16 @@
 ---
-- shell: subscription-manager repos --list-enabled  |grep 'Repo ID'|awk  '{print $3}'
-  register: enabled_repo_list
+- import_tasks: ./manage-repositories.yaml
 
-- name: Disable unneeded repositories
-  command: subscription-manager repos --disable='*'
-  when: need_repo_list|difference(enabled_repo_list.stdout_lines)|length != 0
+- name: Install the required rpms
+  shell: yum install -y wget git yum-utils net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct atomic-openshift-utils atomic-openshift-excluder atomic-openshift-docker-excluder
+  register: rpm_install
+  async: 1800
+  poll: 0
 
-- name: Enable OpenShift repositories
-  command: subscription-manager repos --enable="{{item}}" 
-  with_items:
-    - "{{ need_repo_list }}"
-  when: need_repo_list|difference(enabled_repo_list.stdout_lines)|length != 0
-
+- name: Wait for Enable OpenShift repositories
+  async_status: jid="{{ rpm_install.ansible_job_id }}"
+  register: jobs
+  until: jobs.finished
+  retries: 180
+  delay: 10
 

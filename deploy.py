@@ -274,7 +274,17 @@ def launch(provider=None,
             % (verbosity, sio.getvalue(), operate)
               
         )
-    
+
+    elif deploy_type == 'ocp' and operate == 'install' :
+        status = os.system(
+             'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml \
+             --extra-vars "@vars/all" '
+
+             % (verbosity, provider)
+        )
+ 
+
+   
     else:
         if deploy_type != 'prometheus' and deploy_type != 'logging' and deploy_type != 'metrics' and  operate != 'install':
             status = os.system(
@@ -286,14 +296,7 @@ def launch(provider=None,
                 % (verbosity, sio.getvalue(),deploy_type)
                   
             )
-    print "%s" %(status) 
-    if status == 0 and deploy_type == 'ocp' and (operate == 'install' or operate == 'deploy'):
-        status = os.system(
-             'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml' 
 
-             % (verbosity, provider)
-        )
- 
 
     # Exit appropriately
     if os.WIFEXITED(status) and os.WEXITSTATUS(status) != 0:
