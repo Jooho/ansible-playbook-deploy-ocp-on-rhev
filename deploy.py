@@ -51,6 +51,7 @@ def launch(provider=None,
            instances=None,
            ocp_install=None,
            new_cluster_color=None,
+           status=None,
            verbose=0):
 
     # validate ansible-controller deploy_type options
@@ -273,27 +274,30 @@ def launch(provider=None,
             % (verbosity, sio.getvalue(), operate)
               
         )
-    elif deploy_type == 'ocp' and operate == 'install' :
-        status = os.system(
-             'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml \
-             --extra-vars "@vars/all" '
 
-             % (verbosity, provider)
-        )
- 
 
-   
     else:
-        if deploy_type != 'prometheus' and deploy_type != 'logging' and deploy_type != 'metrics' and  operate != 'install':
+        if operate != 'install':
             status = os.system(
                 'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/config.yaml \
                 --extra-vars "@vars/all" \
                 --extra-vars "@vars/ocp_params" \
                 -e "%s" --tags always,"%s"'
- 
+
                 % (verbosity, sio.getvalue(),deploy_type)
-                  
+
             )
+    if status == None:
+        status = 0;
+    if status == 0 and deploy_type == 'ocp' and (operate == 'install' or operate == 'deploy'):
+        status = os.system(
+              'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml \
+              --extra-vars "@vars/all" '
+
+              % (verbosity, provider)
+         )
+
+
 
     # Exit appropriately
     if os.WIFEXITED(status) and os.WEXITSTATUS(status) != 0:

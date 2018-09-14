@@ -67,6 +67,9 @@ openshift_hosted_registry_storage_host: "{{nfs_server_ip}}"
 openshift_hosted_registry_storage_nfs_directory: "{{nfs_mount_point}}"
 openshift_hosted_registry_storage_volume_name: registry
 openshift_hosted_registry_storage_volume_size: 5Gi
+cli_docker_additional_registries: registry.access.redhat.com
+cli_docker_insecure_registries: 172.30.0.0/16
+openshift_hosted_registry_replicas: 2
 
 # Router
 openshift_router_selector: 'region=infra'
