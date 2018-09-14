@@ -18,4 +18,7 @@ nfs_block_dev_name: sdc
 ./deploy.py --deploy_type=nfs -vvv
 ```
 
-
+## 4. Create Directories for Docker Registry
+```
+mkdir /exports/registry
+```
