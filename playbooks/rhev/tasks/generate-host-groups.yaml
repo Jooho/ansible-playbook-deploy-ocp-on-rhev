@@ -111,7 +111,8 @@
       retries: 60
       delay: 10
       when: master_node_vms|int > 1
-    
+  when: operate != 'teardown'
+  
 - name: Add masters to host groups
   add_host:
     name: "{{ hostvars[item].fqdn}}"

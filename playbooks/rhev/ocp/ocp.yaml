@@ -87,4 +87,4 @@
 
 # Run cluster installation playbook
 #- include: /usr/share/ansible/openshift-ansible/playbooks/byo/config.yml
-- include: ./ocp-install.yaml
+#- include: ./ocp-install.yaml

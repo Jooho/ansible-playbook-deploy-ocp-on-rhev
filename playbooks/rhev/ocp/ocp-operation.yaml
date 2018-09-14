@@ -139,8 +139,8 @@
       delegate_to: localhost
 
 
-#    - name: Refresh inventory to ensure new instaces exist in inventory
-#      meta: refresh_inventory
+    - name: Refresh inventory to ensure new instaces exist in inventory
+      meta: refresh_inventory
 
 # Tag Managements
 
@@ -151,7 +151,7 @@
           password: "{{rhev.pw}}"
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
-        name: "{{cluster_tag}}_master_node_vms"
+        name: "{{target_cluster}}_master_node_vms"
         state: absent 
       when: operate == 'teardown' 
       delegate_to: localhost
@@ -163,7 +163,7 @@
           password: "{{rhev.pw}}"
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
-        name: "{{cluster_tag}}_infra_node_vms"
+        name: "{{target_cluster}}_infra_node_vms"
         state: absent
       when: operate == 'teardown' and infra_node_vms is defined and infra_node_vms > 0
       delegate_to: localhost
@@ -175,7 +175,7 @@
           password: "{{rhev.pw}}"
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
-        name: "{{cluster_tag}}_app_node_vms"
+        name: "{{target_cluster}}_app_node_vms"
         state: absent
       when: operate == 'teardown' and app_node_vms is defined and app_node_vms > 0
       delegate_to: localhost
@@ -187,7 +187,7 @@
           password: "{{rhev.pw}}"
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
-        name: "{{cluster_tag}}_infra_node_vms"
+        name: "{{target_cluster}}_infra_node_vms"
         state: absent
       when: operate == 'teardown' and infra_node_vms is not defined 
       delegate_to: localhost
@@ -199,7 +199,7 @@
           password: "{{rhev.pw}}"
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
-        name: "{{cluster_tag}}_etcd_node_vms"
+        name: "{{target_cluster}}_etcd_node_vms"
         state: absent
       when: operate == 'teardown' and etcd_node_vms is defined and etcd_node_vms > 0
       delegate_to: localhost
@@ -211,7 +211,7 @@
           password: "{{rhev.pw}}"
           url: "{{rhev.api_url}}"
           ca_file: "{{rhev.ca_file}}"
-        name: "{{cluster_tag}}_lb_node_vms"
+        name: "{{target_cluster}}_lb_node_vms"
         state: absent
       when: operate == 'teardown' and master_node_vms|int > 1
       delegate_to: localhost
