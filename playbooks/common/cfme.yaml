@@ -1,9 +1,16 @@
 ---
 - hosts: localhost
-  tasks: 
+  tasks:
     - name: Update groups
       include: "../{{provider}}/tasks/generate-host-groups.yaml"
       tags:
       - always
 
+
 - include: "{{cfme_yaml_path}}"
+  tags:
+  - deploy
+
+- include: "{{cfme_uninstall_yaml_path}}"
+  tags:
+  - undeploy

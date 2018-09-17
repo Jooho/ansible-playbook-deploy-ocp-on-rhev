@@ -221,11 +221,22 @@ def launch(provider=None,
             'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/cfme.yaml \
             --extra-vars "@vars/all" \
             --extra-vars "@vars/ocp_params" \
-            -e "%s" '
+            -e "%s" --tags always,deploy'
 
             % (verbosity, sio.getvalue())
               
         )
+    elif deploy_type == 'cfme' and operate == 'undeploy':
+        status = os.system(
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/cfme.yaml \
+            --extra-vars "@vars/all" \
+            --extra-vars "@vars/ocp_params" \
+            -e "%s" --tags always,undeploy'
+
+            % (verbosity, sio.getvalue())
+              
+        )
+
 
     elif deploy_type == 'service-catalog' and operate == 'deploy':
         status = os.system(

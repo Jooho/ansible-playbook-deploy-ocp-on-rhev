@@ -3,7 +3,9 @@ Add a PV to Service Catalog(Ansible-Service-Broker)
 
 After OCP installtion, you can see Ansible Service Broker use wrong name of PV.
 ```
-$ oc get pvc
+$ oc project  openshift-ansible-service-broker
+
+$ oc get pvc -n openshift-ansible-service-broker
 NAME      STATUS    VOLUME              CAPACITY   ACCESSMODES   STORAGECLASS   AGE
 etcd      Bound      prometheus-volume   0                                       7h
 ```
@@ -34,14 +36,14 @@ spec:
 
 *Redeploy all pods*
 ```
-oc rollout latest dc/asb-etcd
-oc rollout latest dc/asb
+oc rollout latest dc/asb-etcd -n openshift-ansible-service-broker
+oc rollout latest dc/asb -n openshift-ansible-service-broker
 ```
 
 
 ## Result 
 ```
-$ oc get pv,pvc,pod
+$ oc get pv,pvc,pod -n openshift-ansible-service-broker
 NAME                                          CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                                       STORAGECLASS          REASON    AGE
 pv/pvc-91b8762b-b697-11e8-a31a-021a4a0ab219   1G         RWO           Delete          Bound     openshift-ansible-service-broker/etcd       managed-nfs-storage             1m
 

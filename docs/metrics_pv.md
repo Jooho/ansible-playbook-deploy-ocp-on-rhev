@@ -16,7 +16,7 @@ So we need to fix it.
 - PV related with prometheus do not need anymore because new PVs for it are already created by dynamic PV(Storage Class)
 - PVC for metrics will be replaced with new PVC
 ```
-oc delete pvc metrics-cassandra-1 -n openshift-infa
+oc delete pvc metrics-cassandra-1 -n openshift-infra
 
 oc delete pv prometheus-alertmanager-volume prometheus-alertbuffer-volume prometheus-volume
 ```
@@ -41,7 +41,7 @@ spec:
 
 * Restart all pods
 ```
-oc delete pod --all
+oc delete pod --all -n openshift-infra
 ```
 
 
