@@ -41,6 +41,9 @@ This script help deploy OpenShift on RHEV and also provide some more features fo
 - [Metrics PV](./docs/metrics_pv.md)
 - [Logging PV](./docs/logging_pv.md)
 - [Service Catalog PV](./docs/service_catalog_pv.md)
+
+
+### Full Steps
 - [Full Architecture](./docs/ocp_full_post_install.md)( 1 x LB, 3 x Master, 3 x Infra, 5 x App )
 
 
