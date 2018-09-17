@@ -103,6 +103,7 @@ interim_dns:
 # Do not change
 prometheus_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-prometheus/config.yml
 cfme_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-management/config.yml
+cfme_uninstall_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-management/uninstall.yml
 metrics_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-metrics/config.yml
 logging_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-logging/config.yml
 service_catalog_yaml_path: /usr/share/ansible/openshift-ansible/playbooks/openshift-service-catalog/config.yml

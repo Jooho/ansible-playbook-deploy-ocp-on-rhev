@@ -30,8 +30,6 @@ This script help deploy OpenShift on RHEV and also provide some more features fo
 - [Set up NFS server](./docs/setup-nfs.md)
 - [Deploy OpenShift cluster](./docs/deploy-ocp-cluster.md)
 - [Operate OpenShift cluster](./docs/operate-ocp-cluster.md)
-- [Metrics](./docs/metrics.md)
-- [Logging](./docs/logging.md)
 - [Scale up/down infra/app nodes](./docs/scale-infra-app.md)
 - [Blue Green Upgrade](./docs/bg-upgrade.md)
   
@@ -42,7 +40,13 @@ This script help deploy OpenShift on RHEV and also provide some more features fo
 - [Logging PV](./docs/logging_pv.md)
 - [Prometheus PV](./docs/prometheus_pv.md)
 - [Service Catalog PV](./docs/service_catalog_pv.md)
-- [CFME PV](./docs/cfme_pv.md)
 - [Full Architecture](./docs/ocp_full_post_install.md)( 1 x LB, 3 x Master, 3 x Infra, 5 x App )
 
+
+### Deploying Components
+- [Service Catalog](./docs/service_catalog.md)
+- [CFME](./docs/cfme.md)
+- [Metrics](./docs/metrics.md)
+- [Logging](./docs/logging.md)
+- [Prometheus](./docs/prometheus.md)
 

@@ -80,6 +80,7 @@ openshift_metrics_install_metrics: true
 openshift_metrics_cassandra_storage_type: dynamic
 openshift_metrics_storage_kind: dynamic
 openshift_metrics_storage_volume_size: 5Gi
+openshift_metrics_image_version: v3.9.40
 #openshift_metrics_storage_kind: nfs
 #openshift_metrics_storage_access_modes: ['ReadWriteOnce']
 #openshift_metrics_storage_host: "{{nfs_server_ip}}"
@@ -89,7 +90,6 @@ openshift_metrics_storage_volume_size: 5Gi
 #openshift_metrics_hawkular_hostname: hawkular-metrics.example.com
 # Configure the prefix and version for the component images
 #openshift_metrics_image_prefix: docker.io/openshift/origin-
-#openshift_metrics_image_version: v3.9
 # when openshift_deployment_type: 'openshift-enterprise'
 #openshift_metrics_image_prefix: registry.access.redhat.com/openshift3/
 #openshift_metrics_image_version: v3.9
@@ -103,6 +103,7 @@ openshift_logging_es_pvc_dynamic: true
 openshift_logging_es_memory_limit: 4G
 openshift_logging_storage_volume_size: 5Gi
 openshift_logging_es_nodeselector: {"role": "infra"}
+openshift_logging_image_version: v3.9.40
 #openshift_logging_storage_kind: nfs
 #openshift_logging_storage_access_modes: ['ReadWriteOnce']
 #openshift_logging_storage_host: "{{nfs_server_ip}}"
@@ -115,7 +116,6 @@ openshift_logging_es_nodeselector: {"role": "infra"}
 #openshift_logging_es_cluster_size: 1
 # Configure the prefix and version for the component images
 #openshift_logging_image_prefix: docker.io/openshift/origin-
-#openshift_logging_image_version: v3.9.0
 # when openshift_deployment_type: ='openshift-enterprise'
 #openshift_logging_image_prefix: registry.access.redhat.com/openshift3/
 #openshift_logging_image_version: 3.9.0
@@ -157,12 +157,14 @@ openshift_prometheus_alertbuffer_storage_class: managed-nfs-storage
 # CFME project
 openshift_management_project: openshift-management
 openshift_management_project_description: CloudForms Management Engine
+openshift_management_nodeselector: {'region': 'infra'}
 openshift_management_app_template: cfme-template
 openshift_management_storage_class: nfs_external
-openshift_management_install_beta: true
+openshift_management_install_management: true
 openshift_management_template_parameters: {'APPLICATION_MEM_REQ': '3000Mi', 'POSTGRESQL_MEM_REQ': '1Gi', 'ANSIBLE_MEM_REQ': '512Mi', 'APPLICATION_VOLUME_CAPACITY': '5Gi', 'DATABASE_VOLUME_CAPACITY': '10Gi'}
 openshift_management_storage_nfs_external_hostname: "{{nfs_server_ip}}"
 openshift_management_storage_nfs_base_dir: "{{nfs_mount_point}}"
+
 
 
 # Enable service catalog
