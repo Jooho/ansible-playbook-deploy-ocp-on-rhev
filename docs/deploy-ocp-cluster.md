@@ -18,9 +18,9 @@ Using ansible, it will create VMs on RHEV and it will install OCP. Before execut
 
 
 *Demo Scenario*
- - Architecture : 3 x Master, 3 x Infra, 2 x App, LB
- - ocp_version: 3.5
- - tag: 35-1012
+ - Architecture : 3 x Master, 3 x Infra, 5 x App, LB
+ - ocp_version: 3.7
+ - tag: 37-0911
  - prefix_vm: jlee
  - interim_dns.install: yes
    - local host need to add this intrim dns ip into resolv.conf for access to api web console. 
@@ -31,8 +31,23 @@ Using ansible, it will create VMs on RHEV and it will install OCP. Before execut
 ```
 source ~/setup
 
-./deploy.py --deploy_type=ocp --operate=deploy --force=true  
+./deploy.py --deploy_type=ocp --operate=deploy 
 ```
+
+
+*Known issues*
+
+1. If you encounter following error, please configure your ansible controller first
+```
+ERROR! Unable to retrieve file contents
+Could not find or access '/usr/share/ansible/openshift-ansible/playbooks/byo/openshift-node/scaleup.yml'
+```
+**Solution**
+```
+./deploy.py --deploy_type=ansible-controller --operate=config
+```
+
+
 *Video Clips*
 
 [![asciicast](https://asciinema.org/a/142266.png)](https://asciinema.org/a/142266)
