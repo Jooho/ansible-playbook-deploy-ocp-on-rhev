@@ -41,8 +41,8 @@ spec:
 
 *Deploy Elastic Search*
 ```
-oc get dc -o name |grep es | xargs oc rollout cancel 
-oc get dc -o name |grep es | xargs oc rollout latest 
+oc get dc -o name -n logging |grep es | xargs oc rollout cancel -n logging
+oc get dc -o name -n logging |grep es | xargs oc rollout latest -n logging
 ```
 
 ## Results
