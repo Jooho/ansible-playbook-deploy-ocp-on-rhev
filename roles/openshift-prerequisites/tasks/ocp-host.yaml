@@ -74,28 +74,28 @@
     name: docker
     state: present
     update_cache: yes
+  register: docker_install
 
 - name: Configure docker-storage-setup configuration
   copy:
     content: |
-      STORAGE_DRIVER=overlay2
-      CONTAINER_ROOT_LV_NAME=dockerlv
-      CONTAINER_ROOT_LV_SIZE=100%FREE
-      CONTAINER_ROOT_LV_MOUNT_PATH=/var/lib/docker
       DEVS=/dev/vdb
       VG=docker-vg
-      EXTRA_STORAGE_OPTIONS="--storage-opt overlay2.size=3G"
+      DATA_SIZE=95%VG
+      EXTRA_STORAGE_OPTIONS="--storage-opt dm.basesize=3G"
     dest: /etc/sysconfig/docker-storage-setup
+  when: docker_install.changed
 
 - name: Run docker-storage-setup
   command: docker-storage-setup
+  when: docker_install.changed
 
 - name: Start and enable docker
   systemd:
     name: docker
     enabled: yes
     state: started
-
+  when: docker_install.changed
 ## If interim dns is installed, DNS nameserver should be updated
 #- name: Check if iterim dns ip exist in /etc/resolv.conf
 #  command: "grep {{hostvars['localhost']['ansible_controller_ip']}} /etc/resolv.conf"

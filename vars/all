@@ -18,14 +18,14 @@ ansible_controller_hostname: ansible.example.com
 # Base Image Info
 base_image:
   os: rhel
-  version: 7u5
+  version: 7u3
   rhev_os_type: 7x64
   id: "{{lookup('env', 'BASE_IMAGE_ID')}}"
   pw: "{{lookup('env', 'BASE_IMAGE_PW')}}"
 
 # RHEV Info
 rhev:
-  template: RHEL_7U5_for_OCP
+  template: RHEL_7U3_for_OCP
   cluster: Test
   id: "{{lookup('env', 'OVIRT_USERNAME')}}"
   pw: "{{lookup('env', 'OVIRT_PASSWORD')}}"
