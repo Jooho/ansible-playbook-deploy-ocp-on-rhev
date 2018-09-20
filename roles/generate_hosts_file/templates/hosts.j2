@@ -21,7 +21,7 @@ nodes
 
 [nodes]
 {% for item in groups.nodes -%}
-{{item}} openshift_node_labels="{{hostvars[item].openshift_node_labels|to_json|regex_replace('"','\'')}}"
+{{item}}   openshift_node_group_name='{{hostvars[item].openshift_node_group_name}}'
 {% endfor %}
 
 {% if (groups.masters | length) >1 %} 

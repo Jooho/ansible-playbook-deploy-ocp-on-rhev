@@ -2,6 +2,10 @@
 - set_fact:
     target_cluster: "{{ target_cluster_tag|default(cluster_tag) }}"
 
+- set_fact:
+    operate: 'deploy'
+  when: operate is not defined
+
 - name: Watiting until fqdn is set
   block:
     - name: Gather Master Nodes VMs info
@@ -117,6 +121,7 @@
   add_host:
     name: "{{ hostvars[item].fqdn}}"
     groups: all_nodes, masters {% if etcd_node_vms is not defined %}, etcd {% endif %}, nodes, broker_sub_nodes
+    openshift_node_group_name: node-config-master
     openshift_node_labels:
       'role': 'master'
       'region': 'mgmt'
@@ -127,6 +132,7 @@
   add_host:
     name: "{{ hostvars[item].fqdn}}"
     groups: all_nodes, nodes, infra_nodes, broker_sub_nodes 
+    openshift_node_group_name: node-config-infra
     openshift_node_labels:
       role: infra
       region: infra
@@ -139,6 +145,7 @@
   add_host:
     name: "{{ hostvars[item].fqdn}}"
     groups: all_nodes, nodes, app_nodes, node_sub_nodes 
+    openshift_node_group_name: node-config-compute
     openshift_node_labels:
       role: app
       region: "{% if infra_node_vms is not defined %}infra{% else %}app{% endif %}"

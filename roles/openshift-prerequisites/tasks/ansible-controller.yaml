@@ -22,7 +22,7 @@
   shell: yum remove -y atomic-openshift-utils atomic-openshift-clients openshift-ansible
 
 - name: Install new version of atomic-openshift-utils 
-  shell: yum install -y atomic-openshift-utils atomic-openshift-clients
+  shell: yum install -y atomic-openshift-clients openshift-ansible
 
 # Too slow
 #  package:

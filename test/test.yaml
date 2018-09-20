@@ -1,17 +1,17 @@
-- hosts: localhost
-  pre_tasks:
-    - set_fact:
-        openshift_management_nodeselector_new: "{{ openshift_management_nodeselector | default('node-role.kubernetes.io/infra=true') }}"
-        #openshift_management_nodeselector_new: "{{ openshift_management_nodeselector | default('node-role.kubernetes.io/infra=true')|lib_utils_oo_selector_to_string_list }}"
-  tasks:
-    - debug: var=openshift_management_nodeselector_new
-    - name: "Ensure the Management '{{ openshift_management_project }}' namespace exists"
-      oc_project:
-        state: present
-        name: test
-        node_selector: "{{openshift_management_nodeselector_new}}"
-    - fail:
-        msg: abc
+#- hosts: localhost
+#  pre_tasks:
+#    - set_fact:
+#        openshift_management_nodeselector_new: "{{ openshift_management_nodeselector | default('node-role.kubernetes.io/infra=true') }}"
+#        #openshift_management_nodeselector_new: "{{ openshift_management_nodeselector | default('node-role.kubernetes.io/infra=true')|lib_utils_oo_selector_to_string_list }}"
+#  tasks:
+#    - debug: var=openshift_management_nodeselector_new
+#    - name: "Ensure the Management '{{ openshift_management_project }}' namespace exists"
+#      oc_project:
+#        state: present
+#        name: test
+#        node_selector: "{{openshift_management_nodeselector_new}}"
+#    - fail:
+#        msg: abc
 
 
 - hosts: masters,nodes

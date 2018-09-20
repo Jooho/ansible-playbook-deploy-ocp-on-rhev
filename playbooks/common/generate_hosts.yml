@@ -26,4 +26,5 @@
 # Before executing ansible script, you need to copy the official hosts file to ./vars/official_inventory_hosts
 
 # Command
-# ansible-playbook  ./playbook/common/generate_hosts.yml -vvvv -e @vars/all -e "{reformat_vars_to_hosts: true}"
+# ansible-playbook ./playbooks/common/generate_hosts.yml -vvvv -e @vars/all -e "{reformat_vars_to_hosts: false}" -e provider=rhev 
+# ansible-playbook ./playbooks/common/generate_hosts.yml -vvvv -e @vars/all -e "{reformat_vars_to_hosts: true}" -e provider=rhev 

@@ -3,10 +3,14 @@
   gather_facts: no
   tasks:
     - name: Update groups
-      include: ../tasks/generate-host-groups.yaml
+      include: ../tasks/generate-host-groups-operate.yaml
+      tags:
+      - always
      
 - hosts: masters[0]
   gather_facts: no
+  pre_tasks:
+    - debug: var=operate
   tasks:
     - name: Ansible Controller Tasks
       block:
