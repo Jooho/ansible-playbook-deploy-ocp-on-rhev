@@ -1,3 +1,34 @@
+- hosts: localhost
+  pre_tasks:
+    - set_fact:
+       # g_node_hosts: 
+       # - ip-10-10-4-8.ec2.internal
+       # - ip-10-10-5-9.ec2.internal
+       # - ip-10-10-6-6.ec2.internal
+       # - ip-10-10-4-4.ec2.internal
+       # - ip-10-10-5-5.ec2.internal
+       # - ip-10-10-4-6.ec2.internal
+       # - ip-10-10-5-7.ec2.internal
+       # - ip-10-10-4-5.ec2.internal
+       # - ip-10-10-5-6.ec2.internal
+        g_node_hosts: "{{ groups.nodes | default([]) }}"
+    - debug: msg="{{groups['nodes']}}"
+  tasks:
+    - name: Evaluate oo_nodes_to_config
+      add_host:
+        name: "{{ item }}"
+        groups: oo_nodes_to_config
+        ansible_ssh_user: "{{ g_ssh_user | default(omit) }}"
+        ansible_become: "{{ g_sudo | default(omit) }}"
+      with_items: "{{ g_new_node_hosts | default(g_node_hosts | default([], true), true) }}"
+      changed_when: no
+
+    - set_fact:
+        l_nodes_to_join: "{{ groups['oo_nodes_to_config'] | default([]) | map('extract', hostvars) | map(attribute='openshift.node.nodename') | list }}"
+    - debug: var=l_nodes_to_join
+
+
+
 - hosts: masters,nodes
   tasks:
     - command: echo $(hostname)   
