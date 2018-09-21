@@ -25,7 +25,7 @@ verify return:1
 Certificate chain
  0 s:/C=US/O=XXX/CN=lab-rhevm-2.X.X.com
    i:/C=US/O=XXX/CN=CA-lab-rhevm.X.X.com.26106
------BEGIN CERTIFICATE-----                                               # <------ START
+-----BEGIN CERTIFICATE-----                                              
 MIIDvTCCAyagAwIBAgIBHzANBgkqhkiG9w0BAQUFADBPMQswCQYDVQQGEwJVUzEM
 MAoGA1UEChMDR1NTMTIwMAYDVQQDEylDQS1sYWItcmhldm0uZ3NzbGFiLnJkdTIu
 cmVkaGF0LmNvbS4yNjEwNjAeFw0xNzA0MjYxMjA4NDdaFw0yMjA0MDExMjA4NDda
@@ -36,18 +36,18 @@ BgkqhkiG9w0BAQUFAAOBgQAbVxTgHnKcoM1JaTXt+QUDIYkuhhEtLqLeupbAhF0l
 G/Kw3TbQrQAAWyO9iTJH+50anLhp+C0WqKz3k/0Q3syh4oxH9E8FUTefxxjt3m3D
 mjQ2eajME7ywLiGeOd0Cvu9twiTMyM/FMREXKodroAYZ/u8yN1qCwI+Vph9PLYvn
 PA==
------END CERTIFICATE-----                                                 # <------- END
+-----END CERTIFICATE-----                                                 
  1 s:/C=US/O=XXX/CN=CA-lab-rhevm.X.X.com.26106
    i:/C=US/O=XXX/CN=CA-lab-rhevm.X.X.com.26106
------BEGIN CERTIFICATE-----
-MIIDJDCCAo2gAwIBAgIBATANBgkqhkiG9w0BAQUFADBPMQswCQYDVQQGEwJVUzEM
+-----BEGIN CERTIFICATE-----                                              # <------ START
+MIIDJDCCAo2gAwIBAgIBATANBgkqhkiG9w0BAQUFADBPMQswCQYDVQQGEwJVUzEM          
 MAoGA1UEChMDR1NTMTIwMAYDVQQDEylDQS1sYWItcmhldm0uZ3NzbGFiLnJkdTIu
 cmVkaGF0LmNvbS4yNjEwNjAeFw0xNzA5MjIwMzI0NDdaFw0yNzA5MjAwMzI0NDda
 ME8xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNHU1MxMjAwBgNVBAMTKUNBLWxhYi1y
 .............................
 MAoGA1UEChMDR1NTMTIwMAYDVQQDEylDQS1sYWItcmhldm0uZ3NzbGFiLnJkdTIu
 cmVkaGF0LmNvbS4yNjEwNjAeFw0xNzA5MjIwMzI0NDdaFw0yNzA5MjAwMzI0NDda
-ME8xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNHU1MxMjAwBgNVBAMTKUNBLWxhYi1y
+ME8xCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNHU1MxMjAwBgNVBAMTKUNBLWxhYi1y         # <------- END
 
 ```
 
