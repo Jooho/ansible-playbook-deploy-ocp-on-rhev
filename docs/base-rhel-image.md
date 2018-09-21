@@ -34,7 +34,7 @@ subscription-manager repos \
 
 yum repolist
 
-yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct  rhevm-guest-agent-common 
+yum install -y gcc wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct  rhevm-guest-agent-common 
 
 yum update
 
