@@ -1,4 +1,6 @@
 ---
 
 # Run cluster installation playbook
+#- include: ../tasks/generate-host-groups.yaml
+
 - include: "{{ocp_install_yaml_path}}"

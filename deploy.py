@@ -302,12 +302,14 @@ def launch(provider=None,
         status = 0;
     if status == 0 and deploy_type == 'ocp' and (operate == 'install' or operate == 'deploy'):
         status = os.system(
-              'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml \
-              --extra-vars "@vars/all" '
+              'ansible-playbook %s -i /etc/ansible/hosts /tmp/upstream/openshift-ansible-openshift-ansible-3.10.50-1/playbooks/deploy_cluster.yml '
 
-              % (verbosity, provider)
+
+              % (verbosity)
          )
 
+              #'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml \
+              #--extra-vars "@vars/all" '
 
 
     # Exit appropriately

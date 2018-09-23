@@ -2,7 +2,7 @@
 - import_tasks: ./manage-repositories.yaml
 
 - name: Install the required rpms
-  shell: yum install -y wget git yum-utils net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct atomic-openshift-utils atomic-openshift-excluder atomic-openshift-docker-excluder
+  shell: yum install -y wget git yum-utils net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct atomic-openshift-utils atomic-openshift-excluder atomic-openshift-docker-excluder openshift-ansible
   register: rpm_install
   async: 1800
   poll: 0
