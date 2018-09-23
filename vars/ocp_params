@@ -9,11 +9,13 @@ openshift_disable_check: disk_availability,memory_availability
 #  - docker_storage
 dynamic_volumes_check: False
 openshift_enable_unsupported_configurations: True
-openshift_release: "3.10"
+openshift_release: "v3.10"
 openshift_deployment_type: openshift-enterprise
 #openshift_version: "3.10"
-#openshift_pkg_version: "-3.7.42-1.git.0.5a85d33.el7"
+#openshift_pkg_version: "-3.10.34-1"
 docker_version: "1.13.1"
+#openshift_image_tag: v3.10.45-2
+
 
 # Cluster
 openshift_master_default_subdomain: "{{ocp_cluster_subdomain}}"
