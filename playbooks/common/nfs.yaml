@@ -8,5 +8,9 @@
 - hosts: nfs
   tasks:
   - import_role:
+      name: Jooho.ocp_ssh_id_copy
+    vars:
+      ssh_id_copy_target: "{{nfs_server_ip}}"
+  - import_role:
       name: Jooho.nfs_server
 

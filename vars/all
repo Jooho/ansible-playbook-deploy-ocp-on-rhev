@@ -61,7 +61,7 @@ ocp_master_cluster_hostname: "masters-{{cluster_tag}}.{{ocp_dns_domain}}"
 # etcd_node_vms
 master_node_vms: 3
 infra_node_vms: 3
-app_node_vms: 5
+app_node_vms: 2
 master_node_prefix: master
 infra_node_prefix: infra
 app_node_prefix: app
@@ -79,9 +79,14 @@ lb_node_prefix: lb
 #   target_vm: infra_node
 
 # nfs
-nfs_server_ip: dhcp182-21.gsslab.rdu2.redhat.com
+nfs_server_ip: insights-content.prod.gsslab.rdu2.redhat.com
 nfs_mount_point: /exports-nfs
-nfs_block_dev_name: vdc
+nfs_block_dev_name: vdb
+
+target_vm:
+  id: "{{lookup('env', 'BASE_IMAGE_ID')}}"
+  pw: "{{lookup('env', 'BASE_IMAGE_PW')}}"
+
 
 # ETC
 loglevel: debug
