@@ -14,6 +14,7 @@ cluster_tag: "{{tag|default(default_cluster_tag)}}"
 
 ssh_public_key: "{{lookup('env', 'SSH_PUBLIC_KEY')}}"
 ansible_controller_hostname: ansible.example.com
+#openshift_ansible_version: 3.10.21-1.git.0.6446011.el7
 
 # Base Image Info
 base_image:
@@ -79,9 +80,9 @@ lb_node_prefix: lb
 #   target_vm: infra_node
 
 # nfs
-nfs_server_ip: dhcp182-21.gsslab.rdu2.redhat.com
+nfs_server_ip: insights-content.prod.gsslab.rdu2.redhat.com
 nfs_mount_point: /exports-nfs
-nfs_block_dev_name: vdc
+nfs_block_dev_name: vdb
 
 # ETC
 loglevel: debug
