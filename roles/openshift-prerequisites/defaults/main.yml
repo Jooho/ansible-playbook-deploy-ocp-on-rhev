@@ -1,8 +1,8 @@
 need_repo_list:
 - rhel-7-server-rpms
-- rhel-7-server-ose-3.10-rpms
+- rhel-7-server-ose-3.11-rpms
 - rhel-7-server-extras-rpms
-- rhel-7-server-ansible-2.4-rpms
+- rhel-7-server-ansible-2.6-rpms
 
 openshift_ansible_version: ''
 openshift_ansible_pkg_name: openshift-ansible

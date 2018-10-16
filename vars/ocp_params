@@ -1,7 +1,6 @@
 # OCP Cluster
 ansible_ssh_user: root
 ansible_become: true
-deployment_type: openshift-enterprise
 debug_level: 2
 containerized: false
 osm_use_cockpit: true
@@ -9,12 +8,12 @@ openshift_disable_check: disk_availability,memory_availability,package_availabil
 #  - docker_storage
 dynamic_volumes_check: False
 openshift_enable_unsupported_configurations: True
-openshift_release: "v3.10"
+openshift_release: "3.11"
 openshift_deployment_type: openshift-enterprise
-#openshift_version: "3.10"
-openshift_pkg_version: "-3.10.34-1"
+#openshift_version: "3.11"
+#openshift_pkg_version: "-3.11.34-1"
 docker_version: "1.13.1"
-#openshift_image_tag: v3.10.45-2
+#openshift_image_tag: v3.11.45-2
 
 
 # Cluster
@@ -23,6 +22,8 @@ openshift_master_cluster_hostname: "masters-{{hostvars['localhost'].cluster_tag}
 openshift_master_cluster_public_hostname: "{% if 'lb' in groups%}{{groups['lb'][0]}}{% else %}{{openshift_master_cluster_hostname}}{% endif %}"
 openshift_master_cluster_method: "native"
 osm_default_node_selector: "node-role.kubernetes.io/compute=true"
+oreg_auth_user: "{{ oreg_auth_user_name }}"
+oreg_auth_password: "{{ oreg_auth_token }}" 
 #openshift_docker_use_system_container=True
 #openshift_use_etcd_system_container=True
 #openshift_master_api_port: 443
@@ -86,7 +87,7 @@ openshift_metrics_install_metrics: true
 openshift_metrics_cassandra_storage_type: dynamic
 openshift_metrics_storage_kind: dynamic
 openshift_metrics_storage_volume_size: 5Gi
-#openshift_metrics_image_version: v3.10
+#openshift_metrics_image_version: v3.11
 #openshift_metrics_storage_kind: nfs
 #openshift_metrics_storage_access_modes: ['ReadWriteOnce']
 #openshift_metrics_storage_host: "{{nfs_server_ip}}"
@@ -108,8 +109,8 @@ openshift_logging_storage_kind: dynamic
 openshift_logging_es_pvc_dynamic: true
 openshift_logging_es_memory_limit: 4G
 openshift_logging_storage_volume_size: 5Gi
-openshift_logging_es_nodeselector: 'node-role.kubernetes.io/infra=true'
-#openshift_logging_image_version: v3.10
+openshift_logging_es_nodeselector: {"node-type":"infrastructure"}
+#openshift_logging_image_version: v3.11
 #openshift_logging_storage_kind: nfs
 #openshift_logging_storage_access_modes: ['ReadWriteOnce']
 #openshift_logging_storage_host: "{{nfs_server_ip}}"
@@ -192,7 +193,7 @@ template_service_broker_selector: 'node-role.kubernetes.io/infra=true'
 #openshift_service_catalog_image_prefix: docker.io/openshift/origin-
 #openshift_service_catalog_image_prefix: registry.access.redhat.com/openshift3/ose-
 # Force a specific image version to use when pulling the service catalog image
-#openshift_service_catalog_image_version: v3.10
+#openshift_service_catalog_image_version: v3.11
 
 # Configure one of more namespaces whose templates will be served by the TSB
 #openshift_template_service_broker_namespaces: ['openshift']
