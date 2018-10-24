@@ -218,9 +218,10 @@ def launch(provider=None,
 
     elif deploy_type == 'cfme' and operate == 'deploy':
         status = os.system(
-            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/cfme.yaml \
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook -i /etc/ansible/hosts %s playbooks/common/cfme.yaml \
             --extra-vars "@vars/all" \
             --extra-vars "@vars/ocp_params" \
+            -e "openshift_management_install_management=true" \
             -e "%s" --tags always,deploy'
 
             % (verbosity, sio.getvalue())
@@ -228,9 +229,10 @@ def launch(provider=None,
         )
     elif deploy_type == 'cfme' and operate == 'undeploy':
         status = os.system(
-            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook %s playbooks/common/cfme.yaml \
+            'DEFAULT_KEEP_REMOTE_FILES=yes  ansible-playbook -i /etc/ansible/hosts %s playbooks/common/cfme.yaml \
             --extra-vars "@vars/all" \
             --extra-vars "@vars/ocp_params" \
+            -e "openshift_management_install_management=false" \
             -e "%s" --tags always,undeploy'
 
             % (verbosity, sio.getvalue())
@@ -302,14 +304,11 @@ def launch(provider=None,
         status = 0;
     if status == 0 and deploy_type == 'ocp' and (operate == 'install' or operate == 'deploy'):
         status = os.system(
-              'ansible-playbook %s -i /etc/ansible/hosts /tmp/upstream/openshift-ansible-openshift-ansible-3.10.50-1/playbooks/deploy_cluster.yml '
+              'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml \
+              --extra-vars "@vars/all" '
 
-
-              % (verbosity)
+              % (verbosity,provider)
          )
-
-              #'ansible-playbook %s -i /etc/ansible/hosts playbooks/%s/ocp/ocp-install.yaml \
-              #--extra-vars "@vars/all" '
 
 
     # Exit appropriately

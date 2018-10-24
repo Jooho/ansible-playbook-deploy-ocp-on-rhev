@@ -13,6 +13,10 @@
 #  when: need_repo_list|difference(enabled_repo_list.stdout_lines)|length != 0
 
 
+- set_fact:
+    openshift_ansible_pkg_name: "openshift-ansible-{{openshift_ansible_version}}"
+  when: openshift_ansible_version != ''
+
 - import_tasks: ./manage-repositories.yaml
 
 - name: Install essential packages
@@ -22,7 +26,7 @@
   shell: yum remove -y atomic-openshift-utils atomic-openshift-clients openshift-ansible
 
 - name: Install new version of atomic-openshift-utils 
-  shell: yum install -y atomic-openshift-clients openshift-ansible
+  shell: "yum install -y atomic-openshift-clients {{openshift_ansible_pkg_name}}"
 
 # Too slow
 #  package:
