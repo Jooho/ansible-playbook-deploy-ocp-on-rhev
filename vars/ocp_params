@@ -88,7 +88,7 @@ openshift_logging_install_logging: true
 openshift_logging_storage_kind: dynamic
 openshift_logging_es_memory_limit: 4G
 openshift_logging_storage_volume_size: 5Gi
-openshift_logging_es_nodeselector: "{'role': 'infra'}"
+openshift_logging_es_nodeselector: {"role": "infra"}
 #openshift_logging_storage_kind: nfs
 #openshift_logging_storage_access_modes: ['ReadWriteOnce']
 #openshift_logging_storage_host: "{{nfs_server_ip}}"
