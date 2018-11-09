@@ -42,6 +42,7 @@
   add_host:
     name: "{{ hostvars[item].fqdn}}"
     groups: all_nodes, broker_sub_nodes, new_nodes, new_infra_nodes
+    openshift_node_group_name: node-config-infra
     openshift_node_labels:
       role: infra
       region: infra
@@ -55,6 +56,7 @@
   add_host:
     name: "{{ hostvars[item].fqdn}}"
     groups: all_nodes, node_sub_nodes, new_nodes 
+    openshift_node_group_name: node-config-compute
     openshift_node_labels:
       role: app
       region: app
