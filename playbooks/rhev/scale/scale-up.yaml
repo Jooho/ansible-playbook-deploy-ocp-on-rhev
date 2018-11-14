@@ -44,9 +44,9 @@
       vars:
         ssh_id_copy_target: cluster
 
-#    - name: generate host file
-#      include_role:
-#        name: generate_hosts_file
+    - name: generate host file
+      include_role:
+        name: generate_hosts_file
 
     - name: Install interim dns
       include_role:
