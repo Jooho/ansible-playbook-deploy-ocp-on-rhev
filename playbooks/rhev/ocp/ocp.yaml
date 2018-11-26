@@ -50,7 +50,7 @@
   gather_facts: yes
   tasks:
     - name: Install interim dns 
-      include_role:
+      import_role:
         name: interim_dns
       when: interim_dns.install
       delegate_to: localhost

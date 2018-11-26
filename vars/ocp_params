@@ -1,7 +1,6 @@
 # OCP Cluster
 ansible_ssh_user: root
 ansible_become: true
-deployment_type: openshift-enterprise
 debug_level: 2
 containerized: false
 osm_use_cockpit: true
@@ -12,7 +11,7 @@ openshift_enable_unsupported_configurations: True
 openshift_release: "3.10"
 openshift_deployment_type: openshift-enterprise
 #openshift_version: "3.10"
-#openshift_pkg_version: "-3.10.34-1"
+openshift_pkg_version: "-3.10.34"
 docker_version: "1.13.1"
 #openshift_image_tag: v3.10.45-2
 
@@ -209,4 +208,5 @@ openshift_master_controllers_env_vars: {"ENABLE_HTTP2": "true"}
 openshift_node_env_vars: {"ENABLE_HTTP2": "true"}
 
 # node group
-# openshift_node_groups: [{'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true', 'role=infra'], 'edits': []},{'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true', 'role=app'], 'edits': []}, {'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true', 'role=master'], 'edits': []}]
+openshift_node_groups: [{'name': 'node-config-master', 'labels': ['node-role.kubernetes.io/master=true', 'role=master','region=mgmt']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true','role=infra','region=infra','zone=default']}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true', 'role=app','region=app', 'zone=default'], 'edits': [{ 'key': 'kubeletArguments.pods-per-core','value': ['20']}]}]
+
