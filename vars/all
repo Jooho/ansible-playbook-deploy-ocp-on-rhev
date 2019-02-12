@@ -1,7 +1,7 @@
 # Distinguish Each Cluster
 # tag: 36
 prefix_vm: jlee
-tag: 37-0911
+tag: 36-0109
 timestamp: "{{ lookup('pipe', 'date +%m%d') }}"
 default_cluster_tag: "{{ocp_short_version}}_{{timestamp}}"
 cluster_tag: "{{tag|default(default_cluster_tag)}}"
@@ -48,7 +48,7 @@ subs:
 # OpenShift Info
 # package_version: 3.7.14
 
-ocp_version: 3.7
+ocp_version: 3.6
 ocp_short_version: "{{ocp_version|regex_replace('\\.')}}"
 ocp_dns_domain: gsslab.rdu2.redhat.com
 ocp_cluster_subdomain: "cloudapps-{{cluster_tag}}.{{ocp_dns_domain}}"
